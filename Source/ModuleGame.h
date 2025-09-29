@@ -23,6 +23,9 @@ public:
 	bool CleanUp();
 
 public:
+	Texture2D circle;
+	Texture2D box;
+	Texture2D rick;
 
-	
+	std::vector<PhysBody*> bodies;
 };

@@ -33,5 +33,11 @@ bool ModuleGame::CleanUp()
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	if (IsKeyPressed(KEY_SPACE))
+	{
+		bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 25));
+	}
+
+
 	return UPDATE_CONTINUE;
 }
