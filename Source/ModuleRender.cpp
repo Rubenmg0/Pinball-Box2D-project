@@ -19,6 +19,9 @@ bool ModuleRender::Init()
 	LOG("Creating Renderer context");
 	bool ret = true;
 
+    //Colocar texturas
+    pinball_Ball = LoadTexture("Assets/pinball_Ball.png");
+
 	return ret;
 }
 

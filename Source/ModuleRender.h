@@ -24,4 +24,5 @@ public:
 
 	Color background;
     Rectangle camera;
+	Texture pinball_Ball;
 };

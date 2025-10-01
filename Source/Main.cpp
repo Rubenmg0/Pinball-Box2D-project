@@ -17,6 +17,8 @@ enum main_states
 int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
+	SetTargetFPS(60); //Limitador FPS   //Cap FPS
+
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;

@@ -95,10 +95,10 @@ update_status ModulePhysics::PostUpdate()
 		debug = !debug;
 	}
 
-	if (!debug)
-	{
-		return UPDATE_CONTINUE;
-	}
+	//if (!debug)
+	//{
+	//	return UPDATE_CONTINUE;
+	//}
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
@@ -113,8 +113,19 @@ update_status ModulePhysics::PostUpdate()
 				{
 					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
 					b2Vec2 pos = f->GetBody()->GetPosition();
-					
-					DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), (float)METERS_TO_PIXELS(shape->m_radius), DARKGRAY);
+					Rectangle sec = {};
+					sec.x = METERS_TO_PIXELS(0);
+					sec.y = METERS_TO_PIXELS(0);
+					sec.width = shape->m_radius;
+					sec.height = shape->m_radius;
+
+					App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, 0,32,32); //Dibuixat de texura pinball_Ball
+
+					if (debug) // Si en debug
+					{
+						DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), (float)METERS_TO_PIXELS(shape->m_radius), RED);
+					}
+
 				}
 				break;
 
