@@ -1,0 +1,11 @@
+// Pivot 0, 0
+int flipperright-sheet0[4] = {
+	618, 299,
+	654, 578
+};
+
+// Pivot 0.000000, 0.000000
+float flipperright-sheet0[4] = {
+	3.745455f, 3.359550f,
+	3.963636f, 6.494382f
+};
