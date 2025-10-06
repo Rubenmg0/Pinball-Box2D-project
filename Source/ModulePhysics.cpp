@@ -123,7 +123,7 @@ update_status ModulePhysics::PostUpdate()
 					sec.width = shape->m_radius;
 					sec.height = shape->m_radius;
 
-					App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, 0,32,32); //Dibuixat de texura pinball_Ball
+					App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, 0,16,16); //Dibuixat de texura pinball_Ball
 
 					if (debug) // Si en debug
 					{
