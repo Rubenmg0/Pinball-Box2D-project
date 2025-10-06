@@ -21,6 +21,8 @@ bool ModuleRender::Init()
 
     //Colocar texturas
     pinball_Ball = LoadTexture("Assets/pinball_Ball.png");
+    cohete = LoadTexture("assets_robados/ship-sheet0.png");
+    fondo = LoadTexture("assets_robados/bg-sheet0_resized.png");
 
 	return ret;
 }
@@ -28,6 +30,7 @@ bool ModuleRender::Init()
 // PreUpdate: clear buffer
 update_status ModuleRender::PreUpdate()
 {
+
 	return UPDATE_CONTINUE;
 }
 
@@ -35,7 +38,8 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
     ClearBackground(background);
-
+    DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+    DrawTextureEx(cohete, { (540), (950) }, 0.0f, 1, WHITE);
     // NOTE: This function setups render batching system for
     // maximum performance, all consecutive Draw() calls are
     // not processed until EndDrawing() is called
