@@ -27,4 +27,7 @@ public:
 	Texture pinball_Ball;
 	Texture fondo;
 	Texture cohete;
+	Texture bumper;
+	Texture rollover;
+	Texture coins;
 };
