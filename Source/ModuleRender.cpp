@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleGame.h"
 #include <math.h>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -23,6 +24,8 @@ bool ModuleRender::Init()
     pinball_Ball = LoadTexture("Assets/gadgets/pinball_Ball.png");
     cohete = LoadTexture("Assets/background/ship.png");
     fondo = LoadTexture("Assets/background/bg.png");
+    inicio = LoadTexture("Assets/background/metal-pinball_resized.png");
+    menu = LoadTexture("Assets/background/menu.png");
 
     //Texturas con animación
     bumper = LoadTexture("Assets/scores/bumper.png");
@@ -44,8 +47,38 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
     ClearBackground(background);
-    DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-    DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+
+	switch (App->scene_intro->currentScreen) {
+
+	case GameScreen::START:
+
+		DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
+		break;
+
+    case GameScreen::MENU:
+
+        DrawTextureEx(menu, { (-55), (0) }, 0.0f, 1, WHITE);
+        break;
+
+	case GameScreen::GAMEPLAY:
+
+		DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+		DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+		break;
+
+	case GameScreen::DEATH:
+
+		break;
+
+	case GameScreen::ENDING:
+
+		
+		break;
+	}
+
+    //DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+    //DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+    //DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
 
     // NOTE: This function setups render batching system for
     // maximum performance, all consecutive Draw() calls are

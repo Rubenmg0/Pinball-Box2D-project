@@ -128,9 +128,9 @@ update_status ModulePhysics::PostUpdate()
 					Rectangle sourceRec = { 0.0f, 0.0f, (float)App->renderer->pinball_Ball.width, (float)App->renderer->pinball_Ball.height };
 					Rectangle destRec = { METERS_TO_PIXELS(pos.x)- sec.width/2 ,METERS_TO_PIXELS(pos.y)-sec.height/2, METERS_TO_PIXELS(pos.x)+sec.width/2, METERS_TO_PIXELS(pos.y)+sec.height/2 };
 					Vector2 origin= { (float)App->renderer->pinball_Ball.width/2, (float)App->renderer->pinball_Ball.height/2 };
-					//App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle,16,16); //Dibuixat de texura pinball_Ball
+					App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle,16,16); //Dibuixat de texura pinball_Ball
 					
-					DrawTexturePro(App->renderer->pinball_Ball, sourceRec, destRec, origin, angle, WHITE);
+					//DrawTexturePro(App->renderer->pinball_Ball, sourceRec, destRec, origin, angle, WHITE);
 
 
 					if (debug) // Si en debug

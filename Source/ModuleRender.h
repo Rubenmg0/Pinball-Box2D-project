@@ -26,6 +26,8 @@ public:
     Rectangle camera;
 	Texture pinball_Ball;
 	Texture fondo;
+	Texture inicio;
+	Texture menu;
 	Texture cohete;
 	Texture bumper;
 	Texture rollover;

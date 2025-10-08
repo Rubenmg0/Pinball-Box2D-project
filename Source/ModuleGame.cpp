@@ -5,7 +5,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 
-ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START)
 {
 	
 }
@@ -14,8 +14,9 @@ ModuleGame::~ModuleGame()
 {}
 
 // Load assets
-bool ModuleGame::Start()
+bool ModuleGame::Start() 
 {
+
 	LOG("Loading Intro assets");
 	bool ret = true;
 	
@@ -364,7 +365,7 @@ bool ModuleGame::Start()
 	App->physics->CreateChain(270, 140, rebote, 38);
 	App->physics->CreateChain(370, 200, rebote, 38);
 	
-	App->physics->CreateCircle(570, 920, 10); //Pelota inicial
+	App->physics->CreateCircle(570, 920, 10); //Pelota inicial ///////////////////////////////////////////////////////////////
 
 	return ret;
 }
@@ -380,6 +381,18 @@ bool ModuleGame::CleanUp()
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	switch (currentScreen) {
+	case GameScreen::START:
+		if (IsKeyPressed(KEY_ENTER)) {
+			currentScreen = GameScreen::GAMEPLAY;
+		}
+		break;
+
+	case GameScreen::DEATH:
+		currentScreen = GameScreen::GAMEPLAY;
+		App->physics->CreateCircle(570, 920, 10);
+	}
+
 	if (IsKeyPressed(KEY_SPACE))
 	{
 		bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
