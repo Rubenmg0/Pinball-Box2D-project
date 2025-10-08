@@ -57,7 +57,7 @@ update_status ModuleRender::Update()
 
     case GameScreen::MENU:
 
-        DrawTextureEx(menu, { (-55), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
         break;
 
 	case GameScreen::GAMEPLAY:
@@ -75,10 +75,6 @@ update_status ModuleRender::Update()
 		
 		break;
 	}
-
-    //DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-    //DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
-    //DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
 
     // NOTE: This function setups render batching system for
     // maximum performance, all consecutive Draw() calls are

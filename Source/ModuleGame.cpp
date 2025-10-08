@@ -22,7 +22,7 @@ bool ModuleGame::Start()
 	
 	//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
-	360, 1079,
+	360, 1500,
 	360, 1066,
 	531, 1016,
 	531, 958,
@@ -126,7 +126,7 @@ bool ModuleGame::Start()
 	9, 740,
 	9, 997,
 	246, 1068,
-	246, 1079
+	246, 1500
 	};
 	for (int i = 0; i < 210; i++) {
 	
@@ -364,8 +364,6 @@ bool ModuleGame::Start()
 	App->physics->CreateChain(170, 200, rebote, 38);
 	App->physics->CreateChain(270, 140, rebote, 38);
 	App->physics->CreateChain(370, 200, rebote, 38);
-	
-	App->physics->CreateCircle(570, 920, 10); //Pelota inicial ///////////////////////////////////////////////////////////////
 
 	return ret;
 }
@@ -384,19 +382,35 @@ update_status ModuleGame::Update()
 	switch (currentScreen) {
 	case GameScreen::START:
 		if (IsKeyPressed(KEY_ENTER)) {
+			currentScreen = GameScreen::MENU;
+		}
+		break;
+
+	case GameScreen::MENU:
+		if (IsKeyPressed(KEY_ENTER)) {
 			currentScreen = GameScreen::GAMEPLAY;
 		}
 		break;
 
+	case GameScreen::GAMEPLAY:
+		/*if (circulo.active != true) {
+			App->physics->CreateCircle(570, 920, 10);
+			circulo.active = true;
+		}*/
+		
+		if (IsKeyPressed(KEY_SPACE))
+		{
+			bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
+		}
+		break;
+
 	case GameScreen::DEATH:
+		/*circulo.active = false;*/
 		currentScreen = GameScreen::GAMEPLAY;
-		App->physics->CreateCircle(570, 920, 10);
+		
 	}
 
-	if (IsKeyPressed(KEY_SPACE))
-	{
-		bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
-	}
+	
 
 
 	return UPDATE_CONTINUE;
