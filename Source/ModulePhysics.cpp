@@ -16,7 +16,7 @@
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	world = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -30,56 +30,56 @@ bool ModulePhysics::Start()
 	
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 
-	int x = SCREEN_WIDTH;
-	int y = SCREEN_HEIGHT;
+	//int x = SCREEN_WIDTH;
+	//int y = SCREEN_HEIGHT;
 
-	//Ground
-	b2BodyDef groundBody;
-	groundBody.type = b2_staticBody;
-	groundBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(y));
+	////Ground
+	//b2BodyDef groundBody;
+	//groundBody.type = b2_staticBody;
+	//groundBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(y));
 
-	b2Body* gb = world->CreateBody(&groundBody);
+	//b2Body* gb = world->CreateBody(&groundBody);
 
-	b2PolygonShape gshape;
-	gshape.SetAsBox(PIXEL_TO_METERS(x), PIXEL_TO_METERS(1));
+	//b2PolygonShape gshape;
+	//gshape.SetAsBox(PIXEL_TO_METERS(x), PIXEL_TO_METERS(1));
 
-	gb->CreateFixture(&gshape,0);
+	//gb->CreateFixture(&gshape,0);
 
-	//Left
-	b2BodyDef leftBody;
-	leftBody.type = b2_staticBody;
-	leftBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+	////Left
+	//b2BodyDef leftBody;
+	//leftBody.type = b2_staticBody;
+	//leftBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
 
-	b2Body* lb = world->CreateBody(&leftBody);
+	//b2Body* lb = world->CreateBody(&leftBody);
 
-	b2PolygonShape lshape;
-	lshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
+	//b2PolygonShape lshape;
+	//lshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
 
-	lb->CreateFixture(&lshape,0);
+	//lb->CreateFixture(&lshape,0);
 
-	//Right
-	b2BodyDef rightBody;
-	rightBody.type = b2_staticBody;
-	rightBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
+	////Right
+	//b2BodyDef rightBody;
+	//rightBody.type = b2_staticBody;
+	//rightBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
 
-	b2Body* rb = world->CreateBody(&rightBody);
+	//b2Body* rb = world->CreateBody(&rightBody);
 
-	b2PolygonShape rshape;
-	rshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
+	//b2PolygonShape rshape;
+	//rshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
 
-	rb->CreateFixture(&rshape, 0);
+	//rb->CreateFixture(&rshape, 0);
 
-	//Ceiling
-	b2BodyDef ceilBody;
-	ceilBody.type = b2_staticBody;
-	ceilBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
+	////Ceiling
+	//b2BodyDef ceilBody;
+	//ceilBody.type = b2_staticBody;
+	//ceilBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
 
-	b2Body* cb = world->CreateBody(&ceilBody);
+	//b2Body* cb = world->CreateBody(&ceilBody);
 
-	b2PolygonShape cshape;
-	cshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
+	//b2PolygonShape cshape;
+	//cshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
 
-	cb->CreateFixture(&cshape, 0);
+	//cb->CreateFixture(&cshape, 0);
 
 	return true;
 }
@@ -123,7 +123,15 @@ update_status ModulePhysics::PostUpdate()
 					sec.width = shape->m_radius;
 					sec.height = shape->m_radius;
 
-					App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, 0,16,16); //Dibuixat de texura pinball_Ball
+					double angle = f->GetBody()->GetAngle();
+
+					Rectangle sourceRec = { 0.0f, 0.0f, (float)App->renderer->pinball_Ball.width, (float)App->renderer->pinball_Ball.height };
+					Rectangle destRec = { METERS_TO_PIXELS(pos.x)- sec.width/2 ,METERS_TO_PIXELS(pos.y)-sec.height/2, METERS_TO_PIXELS(pos.x)+sec.width/2, METERS_TO_PIXELS(pos.y)+sec.height/2 };
+					Vector2 origin= { (float)App->renderer->pinball_Ball.width/2, (float)App->renderer->pinball_Ball.height/2 };
+					//App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle,16,16); //Dibuixat de texura pinball_Ball
+					
+					DrawTexturePro(App->renderer->pinball_Ball, sourceRec, destRec, origin, angle, WHITE);
+
 
 					if (debug) // Si en debug
 					{
