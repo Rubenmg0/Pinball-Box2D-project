@@ -4,6 +4,7 @@
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "box2d/b2_world.h"
 
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START)
 {
@@ -18,7 +19,15 @@ bool ModuleGame::Start()
 {
 
 	LOG("Loading Intro assets");
-	bool ret = true;
+	b2Body* body;
+
+	
+	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
+	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(150, 625, 5, 2);
+	PhysBody* paddle1 = App->physics->CreateRectangle(150, 625, 20, 60);
+	b2Vec2 pivot = b2Vec2(0,0);
+
+	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, pivot);
 	
 	//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
@@ -365,7 +374,7 @@ bool ModuleGame::Start()
 	App->physics->CreateChain(270, 140, rebote, 38);
 	App->physics->CreateChain(370, 200, rebote, 38);
 
-	return ret;
+	return true;
 }
 
 // Load assets
@@ -403,6 +412,7 @@ update_status ModuleGame::Update()
 			bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
 		}
 		break;
+		
 
 	case GameScreen::DEATH:
 		/*circulo.active = false;*/

@@ -2,7 +2,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-
+#include <vector>
 #include "box2d\box2d.h"
 
 #define GRAVITY_X 0.0f
@@ -37,8 +37,12 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
-	void CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangleNo(int x, int y, int width, int height);
 	void CreateChain(int x, int y, const int* points, int size);
+	b2RevoluteJoint* CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
+
+	/*PhysBody* CreatePaddle(int x, int y);*/
 	
 
 private:

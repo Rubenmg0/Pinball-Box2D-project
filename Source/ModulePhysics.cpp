@@ -29,6 +29,18 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 	
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(150, 625);
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = 1 * 0.5f;
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	b->CreateFixture(&fixture);
 
 	//int x = SCREEN_WIDTH;
 	//int y = SCREEN_HEIGHT;
@@ -224,7 +236,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-void ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 {
 	b2BodyDef boxBodyDef;
 	boxBodyDef.type = b2_dynamicBody;
@@ -240,8 +252,50 @@ void ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	boxFixture.density = 1.0f;
 
 	b->CreateFixture(&boxFixture);
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateRectangleNo(int x, int y, int width, int height)
+{
+	b2BodyDef boxBodyDef;
+	boxBodyDef.type = b2_staticBody;
+	boxBodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&boxBodyDef);
+
+	b2PolygonShape boxShape;
+	boxShape.SetAsBox(PIXEL_TO_METERS(width), PIXEL_TO_METERS(height));
+
+	b2FixtureDef boxFixture;
+	boxFixture.shape = &boxShape;
+	boxFixture.density = 1.0f;
+
+	b->CreateFixture(&boxFixture);
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	return pbody;
+}
+b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
+
+
+	b2RevoluteJointDef jointDef;
+	jointDef.Initialize(paddleAnchor, paddle, pivot);
+
+	jointDef.enableMotor = true;
+	jointDef.motorSpeed = 0.0f; // idle at start
+	jointDef.maxMotorTorque = 100.0f;
+
+	jointDef.enableLimit = true;
+	jointDef.lowerAngle = -0.5f * b2_pi;  // -90 deg
+	jointDef.upperAngle = 0.0f;           // 0 deg
+
+	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
+
+
+	return flipperJoint ;
+}
 void ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 {
 	b2Vec2* vertices = new b2Vec2[size / 2];
@@ -284,3 +338,36 @@ bool ModulePhysics::CleanUp()
 
 	return true;
 }
+
+//PhysBody* ModulePhysics:: CreatePaddle(int x, int y) {
+//
+//
+//
+//
+//	//body definition
+//	b2BodyDef myBodyDef;
+//	myBodyDef.type = b2_dynamicBody;
+//
+//	//hexagonal shape definition
+//	b2PolygonShape polygonShape;
+//	b2Vec2 vertices[6];
+//	for (int i = 0; i < 6; i++) {
+//		float angle = -i / 6.0 * 360 * DEGTORAD;
+//		vertices[i].Set(sinf(angle), cosf(angle));
+//	}
+//	vertices[0].Set(0, 4); //change one vertex to be pointy
+//	polygonShape.Set(vertices, 6);
+//
+//	b2FixtureDef fixture;
+//	fixture.shape = &polygonShape;
+//	fixture.density = 1.0f;
+//	fixture.restitution = 1.0f;
+//
+//	fixture->CreateFixture(&fixture);
+//
+//	PhysBody* pbody = new PhysBody();
+//	pbody->body = b;
+//
+////	return pbody;
+////}
+//}
