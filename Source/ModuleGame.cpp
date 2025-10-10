@@ -342,37 +342,44 @@ bool ModuleGame::Start()
 	//--------------------------------------------------------------------------------------------------------------//
 
 	// ESTO SE TIENE QE HACER UN LA FUNCION DE CREAR CIRCULOS EN VEZ DE HACERLO A MANO
-	int rebote[38] = {
-	6, 14,
-	9, 10,
-	17, 4,
-	27, 1,
-	35, 1,
-	46, 3,
-	56, 9,
-	61, 17,
-	64, 28,
-	63, 41,
-	58, 49,
-	50, 58,
-	40, 62,
-	28, 62,
-	17, 58,
-	8, 49,
-	2, 38,
-	1, 31,
-	2, 22
-	};
-	for (int i = 0; i < 38; i++) {
+	//int rebote[38] = {
+	//6, 14,
+	//9, 10,
+	//17, 4,
+	//27, 1,
+	//35, 1,
+	//46, 3,
+	//56, 9,
+	//61, 17,
+	//64, 28,
+	//63, 41,
+	//58, 49,
+	//50, 58,
+	//40, 62,
+	//28, 62,
+	//17, 58,
+	//8, 49,
+	//2, 38,
+	//1, 31,
+	//2, 22
+	//};
+	//for (int i = 0; i < 38; i++) {
 
-		PIXEL_TO_METERS(rebote[i]);
+	//	PIXEL_TO_METERS(rebote[i]);
 
-	}
+	//}
 
 	//Posiciones correctas ***
-	App->physics->CreateChain(170, 200, rebote, 38);
-	App->physics->CreateChain(270, 140, rebote, 38);
-	App->physics->CreateChain(370, 200, rebote, 38);
+	 
+	PhysBody* circle = App->physics->CreateCircle(200, 220, 38);
+	circle->body->SetType(b2_staticBody);
+	PhysBody* circle2 = App->physics->CreateCircle(300, 160, 38);
+	circle2->body->SetType(b2_staticBody);
+	PhysBody* circle3 = App->physics->CreateCircle(400, 220, 38);
+	circle3->body->SetType(b2_staticBody);
+	/*
+	App->physics->CreateChain(270, 140, rebote, 38);*//*
+	App->physics->CreateChain(370, 200, rebote, 38);*/
 
 	return true;
 }
