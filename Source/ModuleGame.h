@@ -13,7 +13,6 @@ class PhysicEntity;
 
 enum class GameScreen {START, MENU, GAMEPLAY, DEATH, ENDING };
 
-
 class ModuleGame : public Module
 {
 public:

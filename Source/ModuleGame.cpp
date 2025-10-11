@@ -409,15 +409,38 @@ update_status ModuleGame::Update()
 		break;
 
 	case GameScreen::GAMEPLAY:
-		/*if (circulo.active != true) {
-			App->physics->CreateCircle(570, 920, 10);
-			circulo.active = true;
-		}*/
 		
-		if (IsKeyPressed(KEY_SPACE))
+		if (IsKeyPressed(KEY_SPACE) && bodies.empty())
 		{
 			bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
 		}
+
+		for (PhysBody* b : bodies)
+		{
+			float y = METERS_TO_PIXELS(b->body->GetPosition().y);
+			if (y > 1085 && !bodies.empty())
+			{
+				App->physics->DestroyBody(b);
+				bodies.pop_back();
+				
+				if (!bodies.empty())
+					LOG("Aún hay pelotas en el vector\n")
+				else
+					LOG("No queda ninguna pelota\n")
+			}
+		}
+
+		//Caso para si la bola se queda atascada reinciarla
+		if (IsKeyPressed(KEY_R) && !bodies.empty()) {
+			for (PhysBody* b : bodies) 
+			{
+				App->physics->DestroyBody(b);
+				bodies.pop_back();
+			}
+		}
+
+
+
 		break;
 		
 

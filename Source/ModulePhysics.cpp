@@ -342,6 +342,15 @@ bool ModulePhysics::CleanUp()
 	return true;
 }
 
+void ModulePhysics::DestroyBody(PhysBody* body)
+{
+	if (body != nullptr && body->body != nullptr)
+	{
+		world->DestroyBody(body->body); // lo quita del mundo
+		body->body = nullptr;
+	}
+}
+
 //PhysBody* ModulePhysics:: CreatePaddle(int x, int y) {
 //
 //

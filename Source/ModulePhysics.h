@@ -41,6 +41,7 @@ public:
 	PhysBody* CreateRectangleNo(int x, int y, int width, int height);
 	void CreateChain(int x, int y, const int* points, int size);
 	b2RevoluteJoint* CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
+	void DestroyBody(PhysBody* body);
 
 	/*PhysBody* CreatePaddle(int x, int y);*/
 	
