@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "ModuleGame.h"
 
 #include "p2Point.h"
 
@@ -106,7 +107,7 @@ update_status ModulePhysics::PreUpdate()
 // 
 update_status ModulePhysics::PostUpdate()
 {
-	if (IsKeyPressed(KEY_F1))
+	if (IsKeyPressed(KEY_F1) && App->scene_intro->currentScreen == GameScreen::GAMEPLAY)
 	{
 		debug = !debug;
 	}

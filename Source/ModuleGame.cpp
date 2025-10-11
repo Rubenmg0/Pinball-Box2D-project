@@ -412,7 +412,7 @@ update_status ModuleGame::Update()
 		
 		if (IsKeyPressed(KEY_SPACE) && bodies.empty())
 		{
-			bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 10));
+			bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 14));
 		}
 
 		for (PhysBody* b : bodies)
