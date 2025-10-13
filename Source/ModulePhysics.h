@@ -36,6 +36,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	b2World* GetWorld() { return world; }
+
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleNo(int x, int y, int width, int height);

@@ -381,6 +381,12 @@ bool ModuleGame::Start()
 	App->physics->CreateChain(270, 140, rebote, 38);*//*
 	App->physics->CreateChain(370, 200, rebote, 38);*/
 
+	LOG("LOAD SOUNDS");
+	App->audio->LoadFx("Assets/sounds/pinball-collision.mp3");
+	App->audio->LoadFx("Assets/sounds/pinball-collision2.wav");
+	App->audio->LoadFx("Assets/sounds/pinball-collision3.wav");
+
+
 	return true;
 }
 
@@ -417,7 +423,19 @@ update_status ModuleGame::Update()
 
 		for (PhysBody* b : bodies)
 		{
+			b2Contact* lastcontact = nullptr;
+			if (b->body->GetContactList() != NULL)
+			{
+				if (b->body->GetContactList()->contact != lastcontact || lastcontact == nullptr)
+				{
+					App->audio->PlayFx(1);
+					lastcontact = b->body->GetContactList()->contact;
+				}
+
+			}
+			
 			float y = METERS_TO_PIXELS(b->body->GetPosition().y);
+			
 			if (y > 1085 && !bodies.empty())
 			{
 				App->physics->DestroyBody(b);

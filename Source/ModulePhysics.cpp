@@ -43,57 +43,6 @@ bool ModulePhysics::Start()
 	fixture.shape = &shape;
 	b->CreateFixture(&fixture);
 
-	//int x = SCREEN_WIDTH;
-	//int y = SCREEN_HEIGHT;
-
-	////Ground
-	//b2BodyDef groundBody;
-	//groundBody.type = b2_staticBody;
-	//groundBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(y));
-
-	//b2Body* gb = world->CreateBody(&groundBody);
-
-	//b2PolygonShape gshape;
-	//gshape.SetAsBox(PIXEL_TO_METERS(x), PIXEL_TO_METERS(1));
-
-	//gb->CreateFixture(&gshape,0);
-
-	////Left
-	//b2BodyDef leftBody;
-	//leftBody.type = b2_staticBody;
-	//leftBody.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
-
-	//b2Body* lb = world->CreateBody(&leftBody);
-
-	//b2PolygonShape lshape;
-	//lshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
-
-	//lb->CreateFixture(&lshape,0);
-
-	////Right
-	//b2BodyDef rightBody;
-	//rightBody.type = b2_staticBody;
-	//rightBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
-
-	//b2Body* rb = world->CreateBody(&rightBody);
-
-	//b2PolygonShape rshape;
-	//rshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
-
-	//rb->CreateFixture(&rshape, 0);
-
-	////Ceiling
-	//b2BodyDef ceilBody;
-	//ceilBody.type = b2_staticBody;
-	//ceilBody.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(0));
-
-	//b2Body* cb = world->CreateBody(&ceilBody);
-
-	//b2PolygonShape cshape;
-	//cshape.SetAsBox(PIXEL_TO_METERS(1), PIXEL_TO_METERS(y));
-
-	//cb->CreateFixture(&cshape, 0);
-
 	return true;
 }
 
