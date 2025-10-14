@@ -371,11 +371,11 @@ bool ModuleGame::Start()
 
 	//Posiciones correctas ***
 	 
-	PhysBody* circle = App->physics->CreateCircle(200, 220, 38);
+	PhysBody* circle = App->physics->CreateCircle(205, 220, 30);
 	circle->body->SetType(b2_staticBody);
-	PhysBody* circle2 = App->physics->CreateCircle(300, 160, 38);
+	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30);
 	circle2->body->SetType(b2_staticBody);
-	PhysBody* circle3 = App->physics->CreateCircle(400, 220, 38);
+	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30);
 	circle3->body->SetType(b2_staticBody);
 	/*
 	App->physics->CreateChain(270, 140, rebote, 38);*//*
