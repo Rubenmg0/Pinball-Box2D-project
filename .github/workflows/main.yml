@@ -1,43 +1,49 @@
-# Nombre del flujo de trabajo
-name: Build and Release Pinball Project
+# Nombre del flujo de trabajo (Página 7)
+name: Build and Release with CICD
 
-# Eventos que disparan el flujo de trabajo
+# Eventos que disparan el flujo de trabajo (Páginas 8 y 15)
 on:
   push:
     branches:
-      - main
+      - main # Se activa para la CI en cada push a la rama principal
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*' # Se activa para la CI y CD al crear un tag de versión
   pull_request:
     branches:
-      - main
+      - main # Opcional: Se activa para verificar que los Pull Requests compilan
 
 # Definición de los trabajos a ejecutar
 jobs:
+  # --- TRABAJO DE CONSTRUCCIÓN (BUILD JOB) ---
+  # Definición del trabajo (Página 9)
   build:
     name: Build Project
-    runs-on: windows-latest
+    runs-on: windows-latest # Usa una máquina virtual de Windows
 
+    # Pasos del trabajo de construcción (Páginas 10-13)
     steps:
-      # 1. Descarga el código del repositorio
+      # 1. Descarga el código del repositorio (Página 10)
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configura MSBuild
+      # 2. Configura MSBuild para poder compilar (Página 10)
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # 3. Compila la solución
+      # 3. Compila la solución del proyecto (Páginas 5 y 11)
+      # Usamos los nombres y plataformas correctos que descubrimos
       - name: Build solution
         run: msbuild .\\PhysicsGame.sln /p:Configuration=Release /p:Platform=Win32
 
-      # 4. Crea una carpeta para guardar los archivos del juego
+      # 4. Crea la carpeta para el artefacto (Página 12)
       - name: Create artifact directory
         run: mkdir artifact
 
-      # 5. Copia el ejecutable y las librerías (desde la carpeta correcta "Release")
+      # 5. Copia los archivos del juego al artefacto (Páginas 12 y 17)
       - name: Copy build files to artifact directory
+        shell: pwsh
         run: |
+          # Copia el ejecutable y las librerías
           robocopy .\\Release\\ .\\artifact\\ PhysicsGame.exe
           robocopy .\\Release\\ .\\artifact\\ libjpeg-9.dll
           robocopy .\\Release\\ .\\artifact\\ libpng16-16.dll
@@ -46,34 +52,46 @@ jobs:
           robocopy .\\Release\\ .\\artifact\\ SDL2.dll
           robocopy .\\Release\\ .\\artifact\\ SDL2_image.dll
           robocopy .\\Release\\ .\\artifact\\ zlib1.dll
+          # Copia la carpeta de Assets, como sugiere la mejora de la página 17
+          robocopy .\\Assets .\\artifact\\Assets /e
 
-      # 6. Sube los archivos compilados como un "artefacto"
+      # 6. Sube los archivos como un artefacto (Páginas 12 y 13)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: pinball-build
           path: ./artifact
 
+  # --- TRABAJO DE LANZAMIENTO (RELEASE JOB) ---
+  # Definición del trabajo (Página 14)
   release:
     name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    needs: build # Depende de que el trabajo 'build' termine correctamente
+    runs-on: ubuntu-latest # Usa una máquina virtual de Linux
+    if: startsWith(github.ref, 'refs/tags/') # Condición: solo se ejecuta para tags
+
+    # Permisos necesarios para escribir en el repositorio (Página 16)
     permissions:
       contents: write
 
+    # Pasos del trabajo de lanzamiento (Páginas 15 y 16)
     steps:
+      # 1. Descarga el artefacto que se subió en el trabajo 'build' (Página 16)
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: pinball-build
 
+      # 2. Comprime los archivos descargados en un .zip (Página 16)
       - name: Zip artifact for release
         run: zip -r Pinball-Release.zip .
 
+      # 3. Crea la Release en GitHub y sube el .zip (Página 16)
       - name: Create a GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          # El token es necesario para autenticarse (Página 16)
           token: ${{ secrets.GITHUB_TOKEN }}
           body: "Versión ${{ github.ref_name }} del proyecto Pinball."
+          # Archivos que se subirán a la release
           files: Pinball-Release.zip
