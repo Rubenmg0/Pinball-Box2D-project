@@ -27,15 +27,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # 3. Compila la solución del proyecto (con el nombre y la ruta correctos)
+      # 3. Compila la solución (con la plataforma corregida a Win32)
       - name: Build solution
-        run: msbuild .\\PhysicsGame.sln /p:Configuration=Release /p:Platform=x86
+        run: msbuild .\\PhysicsGame.sln /p:Configuration=Release /p:Platform=Win32
 
       # 4. Crea una carpeta para guardar los archivos del juego
       - name: Create artifact directory
         run: mkdir artifact
 
-      # 5. Copia el ejecutable y las librerías (desde la carpeta Release en la raíz)
+      # 5. Copia el ejecutable y las librerías
       - name: Copy build files to artifact directory
         run: |
           robocopy .\\Release\\ .\\artifact\\ PhysicsGame.exe
