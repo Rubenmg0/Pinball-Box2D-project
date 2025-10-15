@@ -27,36 +27,27 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # ---- NUEVO PASO DE DEPURACIÓN ----
-      # 3. Revisa la estructura de archivos para encontrar el .sln
-      - name: Check for Solution File
-        run: |
-          echo "--- Listing all files recursively from the root ---"
-          ls -R
-          echo "-----------------------------------------------------"
-        shell: bash
-
-      # 4. Compila la solución del proyecto
+      # 3. Compila la solución del proyecto (con el nombre y la ruta correctos)
       - name: Build solution
-        run: msbuild .\\Source\\Pinball.sln /p:Configuration=Release /p:Platform=x86
+        run: msbuild .\\PhysicsGame.sln /p:Configuration=Release /p:Platform=x86
 
-      # 5. Crea una carpeta para guardar los archivos del juego
+      # 4. Crea una carpeta para guardar los archivos del juego
       - name: Create artifact directory
         run: mkdir artifact
 
-      # 6. Copia el ejecutable y las librerías
+      # 5. Copia el ejecutable y las librerías (desde la carpeta Release en la raíz)
       - name: Copy build files to artifact directory
         run: |
-          robocopy .\\Source\\Release\\ .\\artifact\\ Pinball.exe
-          robocopy .\\Source\\Release\\ .\\artifact\\ libjpeg-9.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ libpng16-16.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ libtiff-5.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ libwebp-7.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ SDL2.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ SDL2_image.dll
-          robocopy .\\Source\\Release\\ .\\artifact\\ zlib1.dll
+          robocopy .\\Release\\ .\\artifact\\ PhysicsGame.exe
+          robocopy .\\Release\\ .\\artifact\\ libjpeg-9.dll
+          robocopy .\\Release\\ .\\artifact\\ libpng16-16.dll
+          robocopy .\\Release\\ .\\artifact\\ libtiff-5.dll
+          robocopy .\\Release\\ .\\artifact\\ libwebp-7.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2_image.dll
+          robocopy .\\Release\\ .\\artifact\\ zlib1.dll
 
-      # 7. Sube los archivos compilados como un "artefacto"
+      # 6. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
