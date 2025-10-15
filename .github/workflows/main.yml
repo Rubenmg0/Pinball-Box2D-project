@@ -37,6 +37,7 @@ jobs:
 
       # 5. Copia TODOS los archivos necesarios usando robocopy
       - name: Copy build files to artifact directory
+        run: |
           copy Build\PhysicsGame\Release\Win32\PhysicsGame.exe artifact\PhysicsGame
           robocopy ./Assets ./artifact/Assets /e
 
