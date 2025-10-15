@@ -37,10 +37,10 @@ jobs:
 
       # 6. Copia el ejecutable y las librerías (ESTE PASO FALLARÁ)
       - name: Copy build files to artifact directory
-        run: |
-          copy Build\PhysicsGame\Release\Win32\PhysicsGame.exe artifact\PhysicsGame
-
-
+        run: copy Build\PhysicsGame\Release\Win32\PhysicsGame.exe artifact\PhysicsGame
+      - name: Copy Assets folder to artifact directory
+        run: robocopy ./Assets/ ./artifact/PhysicsGame/Assets/ /e
+        
       # 7. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
