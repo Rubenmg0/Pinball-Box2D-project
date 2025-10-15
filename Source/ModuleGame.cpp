@@ -384,6 +384,7 @@ bool ModuleGame::Start()
 	LOG("LOAD SOUNDS");
 	App->audio->LoadFx("Assets/sounds/pinball-collision.mp3");
 	App->audio->LoadFx("Assets/sounds/pinball-collision2.wav");
+	App->audio->LoadFx("Assets/sounds/pinball-collision2_2.m4a");
 	App->audio->LoadFx("Assets/sounds/pinball-collision3.wav");
 
 
@@ -428,7 +429,7 @@ update_status ModuleGame::Update()
 			{
 				if (b->body->GetContactList()->contact != lastcontact || lastcontact == nullptr)
 				{
-					App->audio->PlayFx(1);
+					App->audio->PlayFx(2);
 					lastcontact = b->body->GetContactList()->contact;
 				}
 
