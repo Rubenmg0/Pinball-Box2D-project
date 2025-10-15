@@ -35,17 +35,17 @@ jobs:
       - name: Create artifact directory
         run: mkdir artifact
 
-      # 5. Copia el ejecutable y las librerías (desde la carpeta de salida correcta Win32\Release)
+      # 5. Copia el ejecutable y las librerías (desde la carpeta correcta "Release")
       - name: Copy build files to artifact directory
         run: |
-          robocopy .\\Win32\\Release\\ .\\artifact\\ PhysicsGame.exe
-          robocopy .\\Win32\\Release\\ .\\artifact\\ libjpeg-9.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ libpng16-16.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ libtiff-5.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ libwebp-7.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ SDL2.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ SDL2_image.dll
-          robocopy .\\Win32\\Release\\ .\\artifact\\ zlib1.dll
+          robocopy .\\Release\\ .\\artifact\\ PhysicsGame.exe
+          robocopy .\\Release\\ .\\artifact\\ libjpeg-9.dll
+          robocopy .\\Release\\ .\\artifact\\ libpng16-16.dll
+          robocopy .\\Release\\ .\\artifact\\ libtiff-5.dll
+          robocopy .\\Release\\ .\\artifact\\ libwebp-7.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2_image.dll
+          robocopy .\\Release\\ .\\artifact\\ zlib1.dll
 
       # 6. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
