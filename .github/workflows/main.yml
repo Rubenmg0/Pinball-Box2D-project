@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1. Descarga el código del repositorio (versión actualizada)
+      # 1. Descarga el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -27,21 +27,21 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # 3. Compila la solución (siendo explícito con la plataforma)
+      # 3. Compila la solución
       - name: Build solution
-        run: msbuild ./PhysicsGame.sln /p:Configuration=Release /p:Platform=Win32
+        run: msbuild ./PhysicsGame.sln /p:Configuration=Release
 
-      # 4. Crea una carpeta simple para el artefacto
+      # 5. Crea una carpeta para guardar los archivos del juego
       - name: Create artifact directory
-        run: mkdir artifact
+        run: mkdir artifact/PhysicsGame
 
-      # 5. Copia TODOS los archivos necesarios usando robocopy
+      # 6. Copia el ejecutable y las librerías (ESTE PASO FALLARÁ)
       - name: Copy build files to artifact directory
         run: |
           copy Build\PhysicsGame\Release\Win32\PhysicsGame.exe artifact\PhysicsGame
-          robocopy ./Assets ./artifact/Assets /e
 
-      # 6. Sube los archivos compilados como un "artefacto"
+
+      # 7. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
