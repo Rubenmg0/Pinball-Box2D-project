@@ -1,0 +1,94 @@
+# Nombre del flujo de trabajo
+name: Build and Release Pinball Project
+
+# Eventos que disparan el flujo de trabajo
+on:
+  push:
+    branches:
+      - main  # Se activa al hacer push a la rama main
+    tags:
+      - 'v*.*.*' # Se activa al crear un tag como v1.0.0, v1.2.3, etc.
+  pull_request:
+    branches:
+      - main # Opcional: también se activa al abrir un Pull Request a main
+
+# Definición de los trabajos a ejecutar
+jobs:
+  # Primer trabajo: construir el proyecto
+  build:
+    name: Build Project
+    # La máquina virtual donde se ejecutará el trabajo
+    runs-on: windows-latest
+
+    # Pasos que se ejecutarán en el trabajo de construcción
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura MSBuild para poder compilar
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # 3. Compila la solución del proyecto (Pinball.sln)
+      - name: Build solution
+        run: msbuild .\\Pinball.sln /p:Configuration=Release /p:Platform=x86
+
+      # 4. Crea una carpeta para guardar los archivos del juego
+      - name: Create artifact directory
+        run: mkdir artifact
+
+      # 5. Copia el ejecutable y las librerías a la nueva carpeta
+      # Copiamos el .exe y las librerías .dll necesarias para que funcione
+      - name: Copy build files to artifact directory
+        run: |
+          robocopy .\\Release\\ .\\artifact\\ Pinball.exe
+          robocopy .\\Release\\ .\\artifact\\ libjpeg-9.dll
+          robocopy .\\Release\\ .\\artifact\\ libpng16-16.dll
+          robocopy .\\Release\\ .\\artifact\\ libtiff-5.dll
+          robocopy .\\Release\\ .\\artifact\\ libwebp-7.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2.dll
+          robocopy .\\Release\\ .\\artifact\\ SDL2_image.dll
+          robocopy .\\Release\\ .\\artifact\\ zlib1.dll
+
+      # 6. Sube los archivos compilados como un "artefacto"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pinball-build # Nombre del artefacto
+          path: ./artifact # Carpeta que se va a subir
+
+  # Segundo trabajo: crear la release
+  release:
+    name: Create Release
+    # Depende de que el trabajo 'build' termine correctamente
+    needs: build
+    # Se ejecutará en una máquina virtual con Linux
+    runs-on: ubuntu-latest
+    # Condición: solo se ejecuta si el evento fue la creación de un tag
+    if: startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write # Permiso necesario para crear una release
+
+    steps:
+      # 1. Descarga el artefacto que se subió en el trabajo 'build'
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pinball-build
+
+      # 2. Comprime los archivos descargados en un .zip
+      - name: Zip artifact for release
+        run: zip -r Pinball-Release.zip .
+
+      # 3. Crea la Release en GitHub
+      - name: Create a GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          # El token es necesario para autenticarse
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # El cuerpo de la release
+          body: "Versión ${{ github.ref_name }} del proyecto Pinball."
+          # Archivos que se subirán a la release
+          files: Pinball-Release.zip
