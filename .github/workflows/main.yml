@@ -39,12 +39,7 @@ jobs:
       - name: Copy build files to artifact directory
         run: |
           copy Build\PhysicsGame\Release\Win32\PhysicsGame.exe artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\libjpeg-9.dll artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\libpng16-16.dll artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\libtiff-5.dll artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\SDL2.dll artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\SDL2_image.dll artifact\PhysicsGame
-          copy Build\PhysicsGame\Release\Win32\zlib1.dll artifact\PhysicsGame
+
 
       # 7. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
