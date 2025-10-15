@@ -30,26 +30,25 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # 3. Compila la solución del proyecto (Pinball.sln)
+      # 3. Compila la solución del proyecto (dentro de la carpeta Source)
       - name: Build solution
-        run: msbuild .\\Pinball.sln /p:Configuration=Release /p:Platform=x86
+        run: msbuild .\\Source\\Pinball.sln /p:Configuration=Release /p:Platform=x86
 
       # 4. Crea una carpeta para guardar los archivos del juego
       - name: Create artifact directory
         run: mkdir artifact
 
-      # 5. Copia el ejecutable y las librerías a la nueva carpeta
-      # Copiamos el .exe y las librerías .dll necesarias para que funcione
+      # 5. Copia el ejecutable y las librerías a la nueva carpeta (desde la carpeta Source\Release)
       - name: Copy build files to artifact directory
         run: |
-          robocopy .\\Release\\ .\\artifact\\ Pinball.exe
-          robocopy .\\Release\\ .\\artifact\\ libjpeg-9.dll
-          robocopy .\\Release\\ .\\artifact\\ libpng16-16.dll
-          robocopy .\\Release\\ .\\artifact\\ libtiff-5.dll
-          robocopy .\\Release\\ .\\artifact\\ libwebp-7.dll
-          robocopy .\\Release\\ .\\artifact\\ SDL2.dll
-          robocopy .\\Release\\ .\\artifact\\ SDL2_image.dll
-          robocopy .\\Release\\ .\\artifact\\ zlib1.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ Pinball.exe
+          robocopy .\\Source\\Release\\ .\\artifact\\ libjpeg-9.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ libpng16-16.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ libtiff-5.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ libwebp-7.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ SDL2.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ SDL2_image.dll
+          robocopy .\\Source\\Release\\ .\\artifact\\ zlib1.dll
 
       # 6. Sube los archivos compilados como un "artefacto"
       - name: Upload artifact
@@ -82,7 +81,7 @@ jobs:
       - name: Zip artifact for release
         run: zip -r Pinball-Release.zip .
 
-      # 3. Crea la Release en GitHub
+      # 3. Crea la Release en GitHub y sube el .zip
       - name: Create a GitHub Release
         uses: softprops/action-gh-release@v1
         with:
