@@ -29,7 +29,7 @@ class Circle : public PhysicEntity
 {
 public:
 	Circle(ModulePhysics* physics, int _x, int _y, Module* listener, Texture2D _texture)
-		: PhysicEntity(physics->CreateCircle(_x, _y, 14), listener) //Radio
+		: PhysicEntity(physics->CreateCircle(_x, _y, 14, 0.95f), listener) //Radio
 		, texture(_texture)
 	{	}
 
@@ -418,11 +418,11 @@ bool ModuleGame::Start()
 
 	//Posiciones correctas ***
 	 
-	PhysBody* circle = App->physics->CreateCircle(205, 220, 30);
+	PhysBody* circle = App->physics->CreateCircle(205, 220, 30, 1.7f);
 	circle->body->SetType(b2_staticBody);
-	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30);
+	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30, 1.7f);
 	circle2->body->SetType(b2_staticBody);
-	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30);
+	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30, 1.7f);
 	circle3->body->SetType(b2_staticBody);
 	/*
 	App->physics->CreateChain(270, 140, rebote, 38);*//*
