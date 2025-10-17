@@ -14,14 +14,21 @@
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
-class PhysBody {
+class PhysBody
+{
 public:
-	PhysBody() {}
+	PhysBody() : body(NULL), listener(nullptr)
+	{}
 
-	void GetPosition(int& x, int& y) const;
+	void GetPhysicPosition(int& x, int& y) const;
+	float GetRotation() const;
+	bool Contains(int x, int y) const;
+	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
 
 public:
+	int width, height;
 	b2Body* body;
+	Module* listener;
 };
 
 // Module --------------------------------------
@@ -41,12 +48,14 @@ public:
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleNo(int x, int y, int width, int height);
-	void CreateChain(int x, int y, const int* points, int size);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
+	PhysBody* CreateChain(int x, int y, const int* points, int size);
 	b2RevoluteJoint* CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
 	void DestroyBody(PhysBody* body);
 
 	/*PhysBody* CreatePaddle(int x, int y);*/
-	
+
+	void BeginContact(b2Contact* contact) override;
 
 private:
 

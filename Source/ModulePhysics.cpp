@@ -8,11 +8,6 @@
 
 #include <math.h>
 
-#define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
-#define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
-
-#define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
-#define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -49,6 +44,13 @@ bool ModulePhysics::Start()
 update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
+
+	// TODO: HomeWork
+	/*
+	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
+	{
+	}
+	*/
 
 	return UPDATE_CONTINUE;
 }
@@ -168,9 +170,12 @@ update_status ModulePhysics::PostUpdate()
 
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
+	PhysBody* pbody = new PhysBody();
+
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
 
 	b2Body* b = world->CreateBody(&body);
 
@@ -183,8 +188,8 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 
 	b->CreateFixture(&fixture);
 
-	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
+	pbody->width = pbody->height = radius;
 
 	return pbody;
 }
@@ -205,8 +210,14 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	boxFixture.density = 1.0f;
 
 	b->CreateFixture(&boxFixture);
+
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
+	pbody->width = (int)(width * 0.5f);
+	pbody->height = (int)(height * 0.5f);
+
+	boxBodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+
 	return pbody;
 }
 
@@ -226,10 +237,17 @@ PhysBody* ModulePhysics::CreateRectangleNo(int x, int y, int width, int height)
 	boxFixture.density = 1.0f;
 
 	b->CreateFixture(&boxFixture);
+
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
+	pbody->width = (int)(width * 0.5f);
+	pbody->height = (int)(height * 0.5f);
+
+	boxBodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+
 	return pbody;
 }
+
 b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
 
 
@@ -249,19 +267,22 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 
 	return flipperJoint ;
 }
-void ModulePhysics::CreateChain(int x, int y, const int* points, int size)
+
+PhysBody* ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 {
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	b2ChainShape chainShape;
 	b2Vec2* vertices = new b2Vec2[size / 2];
+
 	for (int i = 0; i < size / 2; ++i) {
 		vertices[i] = b2Vec2(PIXEL_TO_METERS(points[i * 2]), PIXEL_TO_METERS(points[i * 2 + 1]));
 	}
 
-	b2BodyDef bodyDef;
-	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-
-	b2Body* body = world->CreateBody(&bodyDef);
-
-	b2ChainShape chainShape;
 	chainShape.CreateLoop(vertices, size / 2);
 
 	delete[] vertices;
@@ -271,13 +292,90 @@ void ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 	fixture.density = 1.0f;
 
 	body->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = body;
+	pbody->width = pbody->height = 0;
+
+	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+
+	return pbody;
+
 }
 
-void PhysBody::GetPosition(int& x, int& y) const
+void PhysBody::GetPhysicPosition(int& x, int& y) const
 {
 	b2Vec2 pos = body->GetPosition();
 	x = METERS_TO_PIXELS(pos.x);
 	y = METERS_TO_PIXELS(pos.y);
+}
+
+float PhysBody::GetRotation() const
+{
+	return body->GetAngle();
+}
+
+bool PhysBody::Contains(int x, int y) const
+{
+	b2Vec2 p(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	// Return true in case the point is inside ANY of the shapes contained by this body
+
+	b2Fixture* fixture = body->GetFixtureList();
+	while (fixture != nullptr) {
+		if (fixture->GetShape()->TestPoint(body->GetTransform(), p))
+			return true;
+
+		fixture = fixture->GetNext();
+	}
+
+
+	return false;
+}
+
+int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const
+{
+	// Ray cast between both points provided. If not hit return -1
+	// if hit, fill normal_x and normal_y and return the distance between x1,y1 and it's colliding point
+
+	int ret = -1;
+
+	b2RayCastOutput output;
+	b2RayCastInput input;
+
+	input.p1.Set(PIXEL_TO_METERS(x1), PIXEL_TO_METERS(y1));
+	input.p2.Set(PIXEL_TO_METERS(x2), PIXEL_TO_METERS(y2));
+	input.maxFraction = 1.0f;
+
+	for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+		if (fixture->GetShape()->RayCast(&output, input, body->GetTransform(), 0)) {
+
+			float fx = (float)(x2 - x1);
+			float fy = (float)(y2 - y1);
+			float dist = sqrtf((fx * fx) + (fy * fy));
+
+			normal_x = output.normal.x;
+			normal_y = output.normal.y;
+
+			return (int)(output.fraction * dist);
+		}
+	}
+
+	return ret;
+}
+
+void ModulePhysics::BeginContact(b2Contact* contact)
+{
+	PhysBody* a = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+	PhysBody* b = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+
+	if (a && a->listener) {
+		a->listener->OnCollision(a, b);
+	}
+
+	if (b && b->listener) {
+		b->listener->OnCollision(b, a);
+	}
 }
 
 
@@ -286,7 +384,7 @@ bool ModulePhysics::CleanUp()
 {
 	LOG("Destroying physics world");
 
-	// Delete the whole physics world!
+	// TODO Delete the whole physics world!
 
 
 	return true;
