@@ -470,6 +470,19 @@ update_status ModuleGame::Update()
 
 			//bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 14));
 		}
+		if (IsKeyPressed(KEY_DOWN) && bodies.empty()) {
+			Circle* lastBall = ball.back();
+
+			// 2. Verificamos que la pelota exista para evitar errores.
+			if (lastBall != nullptr)
+			{
+				
+				b2Vec2 launchForce(0.0f, -18.0f);
+
+				
+				lastBall->GetBody()->body->ApplyLinearImpulse(launchForce, lastBall->GetBody()->body->GetWorldCenter(), true);
+			}
+		}
 
 		for (Circle* b : ball) //////////////////ACTUALIZAR DE BODIES A BALL
 		{
