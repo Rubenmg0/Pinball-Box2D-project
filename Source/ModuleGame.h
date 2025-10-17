@@ -19,15 +19,18 @@ public:
 	ModuleGame(Application* app, bool start_enabled = true);
 	~ModuleGame();
 
-	GameScreen currentScreen;
 	bool Start();
 	update_status Update();
 	bool CleanUp();
 
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
+
 public:
-	Texture2D circle;
-	Texture2D box;
-	Texture2D rick;
+	GameScreen currentScreen;
+
+	PhysBody* sensor;
+	bool sensed;
 
 	std::vector<PhysBody*> bodies;
+	std::vector<PhysicEntity*> ball;
 };

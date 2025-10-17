@@ -25,6 +25,8 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 	
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	world->SetContactListener(this);
+
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(150, 625);
@@ -331,37 +333,6 @@ bool PhysBody::Contains(int x, int y) const
 
 
 	return false;
-}
-
-int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const
-{
-	// Ray cast between both points provided. If not hit return -1
-	// if hit, fill normal_x and normal_y and return the distance between x1,y1 and it's colliding point
-
-	int ret = -1;
-
-	b2RayCastOutput output;
-	b2RayCastInput input;
-
-	input.p1.Set(PIXEL_TO_METERS(x1), PIXEL_TO_METERS(y1));
-	input.p2.Set(PIXEL_TO_METERS(x2), PIXEL_TO_METERS(y2));
-	input.maxFraction = 1.0f;
-
-	for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-		if (fixture->GetShape()->RayCast(&output, input, body->GetTransform(), 0)) {
-
-			float fx = (float)(x2 - x1);
-			float fy = (float)(y2 - y1);
-			float dist = sqrtf((fx * fx) + (fy * fy));
-
-			normal_x = output.normal.x;
-			normal_y = output.normal.y;
-
-			return (int)(output.fraction * dist);
-		}
-	}
-
-	return ret;
 }
 
 void ModulePhysics::BeginContact(b2Contact* contact)
