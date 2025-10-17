@@ -10,6 +10,7 @@
 
 class PhysBody;
 class PhysicEntity;
+class Circle;
 
 enum class GameScreen {START, MENU, GAMEPLAY, DEATH, ENDING };
 
@@ -32,5 +33,5 @@ public:
 	bool sensed;
 
 	std::vector<PhysBody*> bodies;
-	std::vector<PhysicEntity*> ball;
+	std::vector<Circle*> ball;
 };

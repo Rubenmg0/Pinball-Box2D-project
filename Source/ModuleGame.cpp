@@ -31,8 +31,10 @@ public:
 	Circle(ModulePhysics* physics, int _x, int _y, Module* listener, Texture2D _texture)
 		: PhysicEntity(physics->CreateCircle(_x, _y, 14), listener) //Radio
 		, texture(_texture)
-	{
-			}
+	{	}
+
+	int getPosY() {		int x, y; body->GetPhysicPosition(x, y); return y;	}
+	PhysBody* GetBody() { return body; }
 
 	void Update() override
 	{
@@ -469,27 +471,16 @@ update_status ModuleGame::Update()
 			//bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 14));
 		}
 
-		for (PhysBody* b : bodies) //////////////////ACTUALIZAR DE BODIES A BALL
+		for (Circle* b : ball) //////////////////ACTUALIZAR DE BODIES A BALL
 		{
-			b2Contact* lastcontact = nullptr;
+		float y = b->getPosY();
 			
-			if (b->body->GetContactList() != NULL)
+			if (y > 1085 && !ball.empty())
 			{
-				if (b->body->GetContactList()->contact != lastcontact || lastcontact == nullptr)
-				{
-					App->audio->PlayFx(2);
-					lastcontact = b->body->GetContactList()->contact;
-				}
-			}
-			
-			float y = METERS_TO_PIXELS(b->body->GetPosition().y);
-			
-			if (y > 1085 && !bodies.empty())
-			{
-				App->physics->DestroyBody(b);
-				bodies.pop_back();
+				App->physics->DestroyBody(b->GetBody());
+				ball.pop_back();
 				
-				if (!bodies.empty())
+				if (!ball.empty())
 					LOG("Aún hay pelotas en el vector\n")
 				else
 					LOG("No queda ninguna pelota\n")
