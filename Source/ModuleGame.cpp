@@ -64,11 +64,9 @@ ModuleGame::~ModuleGame()
 // Load assets
 bool ModuleGame::Start() 
 {
-
 	LOG("Loading Intro assets");
 	b2Body* body;
 
-	
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
 	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(150, 625, 5, 2);
 	PhysBody* paddle1 = App->physics->CreateRectangle(150, 625, 20, 60);
@@ -464,24 +462,16 @@ update_status ModuleGame::Update()
 
 	case GameScreen::GAMEPLAY:
 		
-		if (IsKeyPressed(KEY_SPACE) && bodies.empty())
+		if (IsKeyPressed(KEY_SPACE) && ball.empty()) //Verificamos queno hay ningun pinball en pantalla
 		{
 			ball.emplace_back(new Circle(App->physics, GetMouseX(), GetMouseY(), this, App->renderer->pinball_Ball));
-
-			//bodies.push_back(App->physics->CreateCircle(GetMouseX(), GetMouseY(), 14));
 		}
-		if (IsKeyPressed(KEY_DOWN) && bodies.empty()) {
-			Circle* lastBall = ball.back();
-
-			// 2. Verificamos que la pelota exista para evitar errores.
-			if (lastBall != nullptr)
-			{
-				
-				b2Vec2 launchForce(0.0f, -18.0f);
-
-				
-				lastBall->GetBody()->body->ApplyLinearImpulse(launchForce, lastBall->GetBody()->body->GetWorldCenter(), true);
-			}
+		if (IsKeyPressed(KEY_DOWN) && !ball.empty()) // 2. Verificamos que la pelota exista para evitar errores
+		{
+			Circle* pinball = ball.front();
+			
+			b2Vec2 launchForce(0.0f, -9.0f); //(0.0f, -18.0f) //-9 es lo más eequilibrado, el mayor phasing ocurre en contacto con los circulos invisibles
+			pinball->GetBody()->body->ApplyLinearImpulse(launchForce, pinball->GetBody()->body->GetWorldCenter(), true);
 		}
 
 		for (Circle* b : ball) //////////////////ACTUALIZAR DE BODIES A BALL
@@ -501,32 +491,27 @@ update_status ModuleGame::Update()
 		}
 
 		//Caso para si la bola se queda atascada reinciarla
-		if (IsKeyPressed(KEY_R) && !bodies.empty()) {
-			for (PhysBody* b : bodies) 
+		if (IsKeyPressed(KEY_R) && !ball.empty()) {
+			for (Circle* b : ball)
 			{
-				App->physics->DestroyBody(b);
-				bodies.pop_back();
+				App->physics->DestroyBody(b->GetBody());
+				ball.pop_back();
 			}
 		}
 
 
 
 		break;
-		
-
 	case GameScreen::DEATH:
 		/*circulo.active = false;*/
 		currentScreen = GameScreen::GAMEPLAY;
 		
 	}
 
-	
-
-
 	return UPDATE_CONTINUE;
 }
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	App->audio->PlayFx(2);
+	App->audio->PlayFx(2); //Canviar Numero para canviar audio de rebote
 }
