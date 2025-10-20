@@ -64,6 +64,15 @@ update_status ModuleRender::Update()
 
 		DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
 		DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+        
+        for (int i = 0; i < App->scene_intro->remainingBalls; i++)
+        {
+            DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i+1) -10, 10 }, 0, 1, WHITE);
+        }
+
+        DrawTextEx(GetFontDefault(), "Score:", { 10, 30 },20, 1, WHITE);
+        DrawTextEx(GetFontDefault(), "HighScore:", { 10, 60 }, 20, 1, WHITE);
+
 		break;
 
 	case GameScreen::DEATH:

@@ -33,6 +33,8 @@ public:
 	PhysBody* sensor;
 	bool sensed;
 
+	int remainingBalls = 3;
+
 	std::vector<PhysBody*> bodies;
 	std::vector<Circle*> ball;
 };

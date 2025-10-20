@@ -491,9 +491,10 @@ update_status ModuleGame::Update()
 
 	case GameScreen::GAMEPLAY:
 		
-		if (IsKeyPressed(KEY_SPACE) && ball.empty()) //Verificamos queno hay ningun pinball en pantalla
+		if (IsKeyPressed(KEY_SPACE) && ball.empty() && remainingBalls != 0) //Verificamos queno hay ningun pinball en pantalla
 		{
 			ball.emplace_back(new Circle(App->physics, GetMouseX(), GetMouseY(), this, App->renderer->pinball_Ball));
+			remainingBalls--;
 		}
 		if (IsKeyPressed(KEY_DOWN) && !ball.empty()) // 2. Verificamos que la pelota exista para evitar errores
 		{
