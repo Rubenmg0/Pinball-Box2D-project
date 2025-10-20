@@ -52,6 +52,30 @@ public:
 private:
 	Texture2D texture;
 };
+class FlipperLeft
+{
+public:
+	FlipperLeft(PhysBody* paddleAnchor, PhysBody* paddle1, b2Vec2 pivot, b2RevoluteJoint* joint1) {
+		this->paddle1 = paddle1;
+		this->paddle1Anchor = paddleAnchor;
+		this->joint1 = joint1;
+		this->pivot = pivot;
+	}
+	PhysBody* paddle1Anchor;
+	PhysBody* paddle1;
+	b2Vec2 pivot;
+
+	b2RevoluteJoint* joint1;
+
+	void Activate() {
+		joint1->SetMotorSpeed(20.0f);
+
+	}
+	void Deactivate() {
+		joint1->SetMotorSpeed(0.0f);
+
+	}
+};
 
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START)
 {
@@ -65,16 +89,21 @@ ModuleGame::~ModuleGame()
 bool ModuleGame::Start() 
 {
 	LOG("Loading Intro assets");
-	b2Body* body;
 
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
-	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(150, 625, 5, 2);
-	PhysBody* paddle1 = App->physics->CreateRectangle(150, 625, 20, 60);
-	b2Vec2 pivot = b2Vec2(0,0);
-
-	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, pivot);
 	
-	//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
+
+	
+	PhysBody* paddle1 = App->physics->CreateRectangle(150, 625, 20, 60);;
+	float half_w_m = PIXEL_TO_METERS(paddle1->width);  
+	float half_h_m = PIXEL_TO_METERS(paddle1->height); 
+
+	b2Vec2 localPivotRight(half_w_m, half_h_m);
+
+	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(150, 625, 5, 2);;
+	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body,paddle1->body, localPivotRight);
+	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
+//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
 	360, 1500,
 	360, 1066,
@@ -498,8 +527,17 @@ update_status ModuleGame::Update()
 				ball.pop_back();
 			}
 		}
+		
+		if (IsKeyPressed(KEY_A) ) {
+			for (Circle* b : ball)
+			{
+				flipper1->Activate();
+			}
+		
+		}
+		else { flipper1->Deactivate(); }
 
-
+	
 
 		break;
 	case GameScreen::DEATH:

@@ -257,18 +257,30 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 	b2RevoluteJointDef jointDef;
 	jointDef.Initialize(paddleAnchor, paddle, pivot);
 
+	jointDef.enableLimit = true;
+	jointDef.lowerAngle = -30.0f * b2_pi /180;  // -90 deg
+	jointDef.upperAngle = 30.0f * b2_pi/180;           // 0 deg
+
 	jointDef.enableMotor = true;
 	jointDef.motorSpeed = 0.0f; // idle at start
-	jointDef.maxMotorTorque = 100.0f;
-
-	jointDef.enableLimit = true;
-	jointDef.lowerAngle = -0.5f * b2_pi;  // -90 deg
-	jointDef.upperAngle = 0.0f;           // 0 deg
+	jointDef.maxMotorTorque = 1000.0f;
 
 	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
 
 
 	return flipperJoint ;
+}
+void ModulePhysics::UpdateJoint(b2RevoluteJoint* flipperJoint) {
+
+	if (IsKeyDown(KEY_D)) {
+	
+		flipperJoint->SetMotorSpeed(20.0f);
+	
+	}
+	else {
+		flipperJoint->SetMotorSpeed(0.0f);
+	}
+
 }
 
 PhysBody* ModulePhysics::CreateChain(int x, int y, const int* points, int size)
@@ -371,35 +383,5 @@ void ModulePhysics::DestroyBody(PhysBody* body)
 	}
 }
 
-//PhysBody* ModulePhysics:: CreatePaddle(int x, int y) {
-//
-//
-//
-//
-//	//body definition
-//	b2BodyDef myBodyDef;
-//	myBodyDef.type = b2_dynamicBody;
-//
-//	//hexagonal shape definition
-//	b2PolygonShape polygonShape;
-//	b2Vec2 vertices[6];
-//	for (int i = 0; i < 6; i++) {
-//		float angle = -i / 6.0 * 360 * DEGTORAD;
-//		vertices[i].Set(sinf(angle), cosf(angle));
-//	}
-//	vertices[0].Set(0, 4); //change one vertex to be pointy
-//	polygonShape.Set(vertices, 6);
-//
-//	b2FixtureDef fixture;
-//	fixture.shape = &polygonShape;
-//	fixture.density = 1.0f;
-//	fixture.restitution = 1.0f;
-//
-//	fixture->CreateFixture(&fixture);
-//
-//	PhysBody* pbody = new PhysBody();
-//	pbody->body = b;
-//
-////	return pbody;
-////}
-//}
+
+

@@ -36,7 +36,7 @@ class ModulePhysics : public Module, public b2ContactListener // TODO
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);
 	~ModulePhysics();
-
+	
 	bool Start();
 	update_status PreUpdate();
 	update_status PostUpdate();
@@ -51,7 +51,7 @@ public:
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
 	b2RevoluteJoint* CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
 	void DestroyBody(PhysBody* body);
-
+	void ModulePhysics::UpdateJoint(b2RevoluteJoint* flipperJoint);
 	/*PhysBody* CreatePaddle(int x, int y);*/
 
 	void BeginContact(b2Contact* contact) override;
@@ -61,3 +61,4 @@ private:
 	bool debug;
 	b2World* world;
 };
+

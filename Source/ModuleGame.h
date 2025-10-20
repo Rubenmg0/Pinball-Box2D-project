@@ -2,7 +2,7 @@
 
 #include "Globals.h"
 #include "Module.h"
-
+#include "ModulePhysics.h"
 #include "p2Point.h"
 
 #include "raylib.h"
@@ -11,6 +11,7 @@
 class PhysBody;
 class PhysicEntity;
 class Circle;
+class FlipperLeft;
 
 enum class GameScreen {START, MENU, GAMEPLAY, DEATH, ENDING };
 
@@ -28,7 +29,7 @@ public:
 
 public:
 	GameScreen currentScreen;
-
+	FlipperLeft* flipper1;
 	PhysBody* sensor;
 	bool sensed;
 
