@@ -253,17 +253,23 @@ PhysBody* ModulePhysics::CreateRectangleNo(int x, int y, int width, int height)
 
 b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
 
+	
+	float restAngle = -30.0f * DEG2RAD;  // Bottom resting position
 
+	paddleAnchor->SetTransform(paddleAnchor->GetPosition(), restAngle);
+	paddle->SetTransform(paddle->GetPosition(), restAngle);
 	b2RevoluteJointDef jointDef;
-	jointDef.Initialize(paddleAnchor, paddle, pivot);
+	b2Vec2 worldPivot = paddle->GetWorldPoint(pivot);
+	jointDef.Initialize(paddleAnchor, paddle, worldPivot);
+	
 
 	jointDef.enableLimit = true;
-	jointDef.lowerAngle = -30.0f * b2_pi /180;  // -90 deg
-	jointDef.upperAngle = 30.0f * b2_pi/180;           // 0 deg
+	jointDef.lowerAngle = 0.0f * DEG2RAD;
+	jointDef.upperAngle = 60.0f * DEG2RAD;
 
 	jointDef.enableMotor = true;
-	jointDef.motorSpeed = 0.0f; // idle at start
-	jointDef.maxMotorTorque = 1000.0f;
+	jointDef.motorSpeed = 0.0f; 
+	jointDef.maxMotorTorque = 100000.0f;
 
 	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
 
@@ -272,7 +278,7 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 }
 void ModulePhysics::UpdateJoint(b2RevoluteJoint* flipperJoint) {
 
-	if (IsKeyDown(KEY_D)) {
+	if (IsKeyDown(KEY_A)) {
 	
 		flipperJoint->SetMotorSpeed(20.0f);
 	

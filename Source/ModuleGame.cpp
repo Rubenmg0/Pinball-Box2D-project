@@ -68,11 +68,13 @@ public:
 	b2RevoluteJoint* joint1;
 
 	void Activate() {
-		joint1->SetMotorSpeed(20.0f);
+		joint1->EnableMotor(true);
+		joint1->SetMotorSpeed(10000.0f);
 
 	}
 	void Deactivate() {
-		joint1->SetMotorSpeed(0.0f);
+		joint1->EnableMotor(true);
+		joint1->SetMotorSpeed(-10000.0f);
 
 	}
 };
@@ -94,13 +96,14 @@ bool ModuleGame::Start()
 	
 
 	
-	PhysBody* paddle1 = App->physics->CreateRectangle(150, 625, 20, 60);;
+	PhysBody* paddle1 = App->physics->CreateRectangle(50, 50, 20, 60);;
 	float half_w_m = PIXEL_TO_METERS(paddle1->width);  
 	float half_h_m = PIXEL_TO_METERS(paddle1->height); 
 
 	b2Vec2 localPivotRight(half_w_m, half_h_m);
 
-	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(150, 625, 5, 2);;
+	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2);
+
 	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body,paddle1->body, localPivotRight);
 	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
@@ -519,7 +522,12 @@ update_status ModuleGame::Update()
 					LOG("No queda ninguna pelota\n")
 			}
 		}
-
+		if(IsKeyPressed(KEY_A)){
+			flipper1->Activate();
+		}
+		else {
+			flipper1->Deactivate();
+		}
 		//Caso para si la bola se queda atascada reinciarla
 		if (IsKeyPressed(KEY_R) && !ball.empty()) {
 			for (Circle* b : ball)
@@ -529,17 +537,6 @@ update_status ModuleGame::Update()
 			}
 		}
 		
-		if (IsKeyPressed(KEY_A) ) {
-			for (Circle* b : ball)
-			{
-				flipper1->Activate();
-			}
-		
-		}
-		else { flipper1->Deactivate(); }
-
-	
-
 		break;
 	case GameScreen::DEATH:
 		/*circulo.active = false;*/
