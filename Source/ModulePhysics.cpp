@@ -254,7 +254,7 @@ PhysBody* ModulePhysics::CreateRectangleNo(int x, int y, int width, int height)
 b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
 
 	
-	float restAngle = -30.0f * DEG2RAD;  // Bottom resting position
+	float restAngle = -130.0f * DEG2RAD;  // Bottom resting position
 
 	paddleAnchor->SetTransform(paddleAnchor->GetPosition(), restAngle);
 	paddle->SetTransform(paddle->GetPosition(), restAngle);

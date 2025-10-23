@@ -95,8 +95,8 @@ bool ModuleGame::Start()
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
 	
 
-	
-	PhysBody* paddle1 = App->physics->CreateRectangle(50, 50, 20, 60);;
+	//firstFlipper
+	PhysBody* paddle1 = App->physics->CreateRectangle(430, 374, 10, 40);;
 	float half_w_m = PIXEL_TO_METERS(paddle1->width);  
 	float half_h_m = PIXEL_TO_METERS(paddle1->height); 
 
@@ -106,6 +106,18 @@ bool ModuleGame::Start()
 
 	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body,paddle1->body, localPivotRight);
 	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
+
+	//secondFlipper
+	 PhysBody* paddle2 = App->physics->CreateRectangle(360, 1000, 10, 50);;
+	float half_w_m2 = PIXEL_TO_METERS(paddle1->width);
+	float half_h_m2 = PIXEL_TO_METERS(paddle1->height);
+
+	b2Vec2 localPivotRight2(half_w_m, half_h_m);
+
+	PhysBody* paddle1Anchor2 = App->physics->CreateRectangleNo(40, 20, 5, 2);
+
+	b2RevoluteJoint* joint2 = App->physics->CreateJoint(paddle1Anchor2->body, paddle2->body, localPivotRight2);
+	flipper2 = new FlipperLeft(paddle1Anchor2, paddle2, localPivotRight2, joint2);
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
 	360, 1500,
@@ -522,11 +534,13 @@ update_status ModuleGame::Update()
 					LOG("No queda ninguna pelota\n")
 			}
 		}
-		if(IsKeyPressed(KEY_A)){
+		if(IsKeyDown(KEY_D)){
 			flipper1->Activate();
+			flipper2->Activate();
 		}
 		else {
 			flipper1->Deactivate();
+			flipper2->Deactivate();
 		}
 		//Caso para si la bola se queda atascada reinciarla
 		if (IsKeyPressed(KEY_R) && !ball.empty()) {
