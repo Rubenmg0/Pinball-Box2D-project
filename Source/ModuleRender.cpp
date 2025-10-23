@@ -26,9 +26,12 @@ bool ModuleRender::Init()
     fondo = LoadTexture("Assets/background/bg.png");
     inicio = LoadTexture("Assets/background/metal-pinball_resized.png");
     menu = LoadTexture("Assets/background/menu.png");
+    gameover = LoadTexture("Assets/background/gameover.png");
 
     //Texturas con animación
     bumper = LoadTexture("Assets/scores/bumper.png");
+    bumper1 = LoadTexture("Assets/scores/bumper1.png");
+
     rollover = LoadTexture("Assets/scores/rollover.png");
 
     //coins = LoadTexture("Assets/scores/.png");
@@ -65,6 +68,16 @@ update_status ModuleRender::Update()
 		DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
 		DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
         
+        DrawTextureEx(bumper, { 173, 185 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 173, 185 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 370, 185 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 370, 185 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 270, 130 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 270, 130 }, 0.0f, 1, WHITE);
+         
+
         for (int i = 0; i < App->scene_intro->remainingBalls; i++)
         {
             DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i+1) -10, 10 }, 0, 1, WHITE);
@@ -75,13 +88,10 @@ update_status ModuleRender::Update()
 
 		break;
 
-	case GameScreen::DEATH:
-
-		break;
-
 	case GameScreen::ENDING:
+        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
 
-		
 		break;
 	}
 

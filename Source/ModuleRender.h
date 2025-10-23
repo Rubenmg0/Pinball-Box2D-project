@@ -28,8 +28,14 @@ public:
 	Texture fondo;
 	Texture inicio;
 	Texture menu;
+	Texture gameover;
 	Texture cohete;
+
 	Texture bumper;
+	Texture bumper1;
+
+
 	Texture rollover;
 	Texture coins;
+	
 };

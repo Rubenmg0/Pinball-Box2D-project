@@ -13,7 +13,7 @@ class PhysicEntity;
 class Circle;
 class FlipperLeft;
 
-enum class GameScreen {START, MENU, GAMEPLAY, DEATH, ENDING };
+enum class GameScreen {START, MENU, GAMEPLAY, ENDING };
 
 class ModuleGame : public Module
 {

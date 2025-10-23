@@ -48,10 +48,14 @@ public:
 		float rotation = body->GetRotation() * RAD2DEG;
 		DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
 	}
-
+	void ShootBall(const b2Vec2& force) { //Funcion para impulsar la bola
+		body->body->ApplyLinearImpulseToCenter(force, true);
+	}
+	bool impulso_inicial = true;
 private:
 	Texture2D texture;
 };
+
 class FlipperLeft
 {
 public:
@@ -428,37 +432,6 @@ bool ModuleGame::Start()
 
 	}
 	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
-	//--------------------------------------------------------------------------------------------------------------//
-
-	// ESTO SE TIENE QE HACER UN LA FUNCION DE CREAR CIRCULOS EN VEZ DE HACERLO A MANO
-	//int rebote[38] = {
-	//6, 14,
-	//9, 10,
-	//17, 4,
-	//27, 1,
-	//35, 1,
-	//46, 3,
-	//56, 9,
-	//61, 17,
-	//64, 28,
-	//63, 41,
-	//58, 49,
-	//50, 58,
-	//40, 62,
-	//28, 62,
-	//17, 58,
-	//8, 49,
-	//2, 38,
-	//1, 31,
-	//2, 22
-	//};
-	//for (int i = 0; i < 38; i++) {
-
-	//	PIXEL_TO_METERS(rebote[i]);
-
-	//}
-
-	//Posiciones correctas ***
 	 
 	PhysBody* circle = App->physics->CreateCircle(205, 220, 30, 1.7f);
 	circle->body->SetType(b2_staticBody);
@@ -466,9 +439,7 @@ bool ModuleGame::Start()
 	circle2->body->SetType(b2_staticBody);
 	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30, 1.7f);
 	circle3->body->SetType(b2_staticBody);
-	/*
-	App->physics->CreateChain(270, 140, rebote, 38);*//*
-	App->physics->CreateChain(370, 200, rebote, 38);*/
+	
 
 	LOG("LOAD SOUNDS");
 	App->audio->LoadFx("Assets/sounds/pinball-collision.mp3");
@@ -506,17 +477,19 @@ update_status ModuleGame::Update()
 
 	case GameScreen::GAMEPLAY:
 		
-		if (IsKeyPressed(KEY_SPACE) && ball.empty() && remainingBalls != 0) //Verificamos queno hay ningun pinball en pantalla
+		if (ball.empty() && remainingBalls != 0) //Verificamos queno hay ningun pinball en pantalla
 		{
-			ball.emplace_back(new Circle(App->physics, GetMouseX(), GetMouseY(), this, App->renderer->pinball_Ball));
+			ball.emplace_back(new Circle(App->physics, 568, 920, this, App->renderer->pinball_Ball));
 			remainingBalls--;
 		}
-		if (IsKeyPressed(KEY_DOWN) && !ball.empty()) // 2. Verificamos que la pelota exista para evitar errores
+
+
+		if (IsKeyPressed(KEY_DOWN) && !ball.empty() && ball.front()->impulso_inicial) // 2. Verificamos que la pelota exista para evitar errores
 		{
-			Circle* pinball = ball.front();
-			
-			b2Vec2 launchForce(0.0f, -9.0f); //(0.0f, -18.0f) //-9 es lo más eequilibrado, el mayor phasing ocurre en contacto con los circulos invisibles
-			pinball->GetBody()->body->ApplyLinearImpulse(launchForce, pinball->GetBody()->body->GetWorldCenter(), true);
+			b2Vec2 launchForce(0.0f, -9.0f);
+
+			ball.front()->ShootBall(launchForce);
+			ball.front()->impulso_inicial = false;
 		}
 
 		for (Circle* b : ball) //////////////////ACTUALIZAR DE BODIES A BALL
@@ -550,12 +523,15 @@ update_status ModuleGame::Update()
 				ball.pop_back();
 			}
 		}
-		
+
+		if (ball.empty() && remainingBalls == 0)
+		{
+			currentScreen = GameScreen::ENDING;
+		}
+
 		break;
-	case GameScreen::DEATH:
-		/*circulo.active = false;*/
-		currentScreen = GameScreen::GAMEPLAY;
-		
+	case GameScreen::ENDING:
+		break;
 	}
 
 	return UPDATE_CONTINUE;
