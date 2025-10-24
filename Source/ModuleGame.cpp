@@ -95,26 +95,22 @@ ModuleGame::~ModuleGame()
 bool ModuleGame::Start() 
 {
 	LOG("Loading Intro assets");
-
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
-	
-	PhysBody* start = App->physics->CreateCircle(430, 370, 10, 0.5);
-
 
 	//firstFlipper
 	PhysBody* paddle1 = App->physics->CreateRectangle(430, 370, 10, 40);;
-	float half_w_m = PIXEL_TO_METERS(paddle1->width);  
-	float half_h_m = PIXEL_TO_METERS(paddle1->height); 
+	float half_w_m = PIXEL_TO_METERS(paddle1->width);
+	float half_h_m = PIXEL_TO_METERS(paddle1->height);
 
 	b2Vec2 localPivotRight(half_w_m, half_h_m);
 
 	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2);
 
-	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body,paddle1->body, localPivotRight);
+	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight);
 	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
 
 	//secondFlipper
-	 PhysBody* paddle2 = App->physics->CreateRectangle(360, 1000, 10, 50);;
+	PhysBody* paddle2 = App->physics->CreateRectangle(360, 1000, 10, 50);;
 	float half_w_m2 = PIXEL_TO_METERS(paddle2->width);
 	float half_h_m2 = PIXEL_TO_METERS(paddle2->height);
 
@@ -126,7 +122,7 @@ bool ModuleGame::Start()
 	flipper2 = new FlipperLeft(paddle1Anchor2, paddle2, localPivotRight2, joint2);
 
 	// third flipper
- PhysBody* paddle3 = App->physics->CreateRectangle(240, 985, 10, 50);
+	PhysBody* paddle3 = App->physics->CreateRectangle(240, 985, 10, 50);
 	float half_w_m3 = PIXEL_TO_METERS(paddle3->width);
 	float half_h_m3 = PIXEL_TO_METERS(paddle3->height);
 
@@ -137,7 +133,7 @@ bool ModuleGame::Start()
 	b2RevoluteJoint* joint3 = App->physics->CreateJoint1(paddle1Anchor3->body, paddle3->body, localPivotRight3);
 	flipper3 = new FlipperLeft(paddle1Anchor3, paddle3, localPivotRight3, joint3);
 	// fourth flipper
-	
+
 	PhysBody* paddle4 = App->physics->CreateRectangle(200, 630, 10, 40);
 	float half_w_m4 = PIXEL_TO_METERS(paddle4->width);
 	float half_h_m4 = PIXEL_TO_METERS(paddle4->height);
@@ -148,6 +144,7 @@ bool ModuleGame::Start()
 
 	b2RevoluteJoint* joint4 = App->physics->CreateJoint1(paddle1Anchor4->body, paddle4->body, localPivotRight4);
 	flipper4 = new FlipperLeft(paddle1Anchor4, paddle4, localPivotRight4, joint4);
+
 
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
@@ -506,6 +503,8 @@ update_status ModuleGame::Update()
 
 	switch (currentScreen) {
 	case GameScreen::START:
+		start = App->physics->CreateRectangle(302, 405, 188, 30);
+		start->body->SetType(b2_staticBody);
 		if (IsKeyPressed(KEY_ENTER)) {
 			currentScreen = GameScreen::MENU;
 		}
@@ -513,6 +512,8 @@ update_status ModuleGame::Update()
 		break;
 
 	case GameScreen::MENU:
+		App->physics->DestroyBody(start);
+		start = nullptr;
 		if (IsKeyPressed(KEY_ENTER)) {
 			currentScreen = GameScreen::GAMEPLAY;
 		}

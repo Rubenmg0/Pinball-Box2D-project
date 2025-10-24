@@ -30,6 +30,9 @@ public:
 
 public:
 	GameScreen currentScreen;
+
+	PhysBody* start = nullptr;
+
 	FlipperLeft* flipper1;
 	FlipperLeft* flipper2;
 	FlipperLeft* flipper3;
