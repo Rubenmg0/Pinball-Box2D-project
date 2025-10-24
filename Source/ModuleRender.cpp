@@ -68,11 +68,11 @@ update_status ModuleRender::Update()
 		DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
 		DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
         
-        DrawTextureEx(bumper, { 173, 185 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 173, 185 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
 
-        DrawTextureEx(bumper, { 370, 185 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 370, 185 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
 
         DrawTextureEx(bumper, { 270, 130 }, 0.0f, 1, WHITE);
         DrawTextureEx(bumper1, { 270, 130 }, 0.0f, 1, WHITE);

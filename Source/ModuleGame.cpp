@@ -483,6 +483,24 @@ update_status ModuleGame::Update()
 			remainingBalls--;
 		}
 
+		if (abs(ball.front()->GetBody()->body->GetLinearVelocity().x) > maxvX)
+		{
+			b2Vec2 x;
+			if (ball.front()->GetBody()->body->GetLinearVelocity().x > maxvX)
+			{ x = { maxvX, 0 };}
+			else { x = { -maxvX, 0 };}
+			ball.front()->GetBody()->body->SetLinearVelocity(x);
+		}	
+		if (abs(ball.front()->GetBody()->body->GetLinearVelocity().y) > maxvY)
+		{
+			b2Vec2 x;
+			if (ball.front()->GetBody()->body->GetLinearVelocity().y > maxvY)
+			{
+				x = { maxvX, 0 };
+			}
+			else { x = { -maxvX, 0 }; }
+			ball.front()->GetBody()->body->SetLinearVelocity(x);
+		}
 
 		if (IsKeyPressed(KEY_DOWN) && !ball.empty() && ball.front()->impulso_inicial) // 2. Verificamos que la pelota exista para evitar errores
 		{
