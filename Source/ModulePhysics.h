@@ -60,5 +60,7 @@ private:
 
 	bool debug;
 	b2World* world;
+	b2MouseJoint* mouse_joint;
+	b2Body* ground;
 };
 

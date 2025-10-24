@@ -98,6 +98,8 @@ bool ModuleGame::Start()
 
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
 	
+	PhysBody* start = App->physics->CreateCircle(430, 370, 10, 0);
+
 
 	//firstFlipper
 	PhysBody* paddle1 = App->physics->CreateRectangle(430, 370, 10, 40);;
@@ -472,7 +474,10 @@ bool ModuleGame::Start()
 	App->audio->LoadFx("Assets/sounds/pinball-collision2_2.m4a");
 	App->audio->LoadFx("Assets/sounds/pinball-collision3.wav");
 
-
+	if (App->audio->musicOn)
+	{
+		App->audio->PlayMusic("Assets/sounds/music.wav");
+	}
 
 	return true;
 }
@@ -504,10 +509,7 @@ update_status ModuleGame::Update()
 			App->audio->StopMusic();
 		}
 	}
-	if (App->audio->musicOn)
-	{
-		App->audio->PlayMusic("Assets/sounds/music.wav");
-	}
+
 
 
 	switch (currentScreen) {

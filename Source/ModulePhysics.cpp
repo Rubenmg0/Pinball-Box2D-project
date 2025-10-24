@@ -70,6 +70,10 @@ update_status ModulePhysics::PostUpdate()
 	//	return UPDATE_CONTINUE;
 	//}
 
+	b2Body* mouseSelected = nullptr;
+	Vector2 mouse = GetMousePosition();
+	b2Vec2 pMouse = b2Vec2(PIXEL_TO_METERS(mouse.x), PIXEL_TO_METERS(mouse.y));
+
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
@@ -162,8 +166,28 @@ update_status ModulePhysics::PostUpdate()
 					DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), BLUE);
 				}
 				break;
+
+				if (mouseSelected == nullptr && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+					if (f->TestPoint(pMouse)) {
+						TraceLog(LOG_INFO, "TEST");
+						mouseSelected = b;
+					}
+				}
 			}	
 		}
+	}
+
+	if (mouseSelected) {
+		b2MouseJointDef def;
+
+		def.bodyA = ground;
+		def.bodyB = mouseSelected;
+		def.target = pMouse;
+		def.damping = 0.5f;
+		def.stiffness = 20.f;
+		def.maxForce = 100.f * mouseSelected->GetMass();
+
+		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	}
 
 	return UPDATE_CONTINUE;
