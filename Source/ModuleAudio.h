@@ -17,12 +17,17 @@ public:
 
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	void StopMusic();
+	Music GetMusic() { return music; };
 
 	// Load a sound in memory
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded sound
 	bool PlayFx(unsigned int fx, int repeat = 0);
+public:
+	bool musicOn = true;
+	bool soundsOn = true;
 
 private:
 

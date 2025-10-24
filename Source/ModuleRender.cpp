@@ -64,8 +64,8 @@ update_status ModuleRender::Update()
         DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
         DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
 
-        DrawTextureEx(bumper, { 270, 130 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 270, 130 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
 
 
         for (int i = 0; i < App->scene_intro->remainingBalls; i++)
