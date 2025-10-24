@@ -31,6 +31,8 @@ public:
 	GameScreen currentScreen;
 	FlipperLeft* flipper1;
 	FlipperLeft* flipper2;
+	FlipperLeft* flipper3;
+	FlipperLeft* flipper4;
 	PhysBody* sensor;
 	bool sensed;
 

@@ -73,12 +73,12 @@ public:
 
 	void Activate() {
 		joint1->EnableMotor(true);
-		joint1->SetMotorSpeed(10000.0f);
+		joint1->SetMotorSpeed(1000.0f);
 
 	}
 	void Deactivate() {
 		joint1->EnableMotor(true);
-		joint1->SetMotorSpeed(-10000.0f);
+		joint1->SetMotorSpeed(-1000.0f);
 
 	}
 };
@@ -100,7 +100,7 @@ bool ModuleGame::Start()
 	
 
 	//firstFlipper
-	PhysBody* paddle1 = App->physics->CreateRectangle(430, 374, 10, 40);;
+	PhysBody* paddle1 = App->physics->CreateRectangle(430, 370, 10, 40);;
 	float half_w_m = PIXEL_TO_METERS(paddle1->width);  
 	float half_h_m = PIXEL_TO_METERS(paddle1->height); 
 
@@ -113,15 +113,40 @@ bool ModuleGame::Start()
 
 	//secondFlipper
 	 PhysBody* paddle2 = App->physics->CreateRectangle(360, 1000, 10, 50);;
-	float half_w_m2 = PIXEL_TO_METERS(paddle1->width);
-	float half_h_m2 = PIXEL_TO_METERS(paddle1->height);
+	float half_w_m2 = PIXEL_TO_METERS(paddle2->width);
+	float half_h_m2 = PIXEL_TO_METERS(paddle2->height);
 
-	b2Vec2 localPivotRight2(half_w_m, half_h_m);
+	b2Vec2 localPivotRight2(half_w_m2, half_h_m2);
 
 	PhysBody* paddle1Anchor2 = App->physics->CreateRectangleNo(40, 20, 5, 2);
 
 	b2RevoluteJoint* joint2 = App->physics->CreateJoint(paddle1Anchor2->body, paddle2->body, localPivotRight2);
 	flipper2 = new FlipperLeft(paddle1Anchor2, paddle2, localPivotRight2, joint2);
+
+	// third flipper
+ PhysBody* paddle3 = App->physics->CreateRectangle(240, 985, 10, 50);
+	float half_w_m3 = PIXEL_TO_METERS(paddle3->width);
+	float half_h_m3 = PIXEL_TO_METERS(paddle3->height);
+
+	b2Vec2 localPivotRight3(-half_w_m3, -half_h_m3);
+
+	PhysBody* paddle1Anchor3 = App->physics->CreateRectangleNo(40, 20, 5, 2);
+
+	b2RevoluteJoint* joint3 = App->physics->CreateJoint1(paddle1Anchor3->body, paddle3->body, localPivotRight3);
+	flipper3 = new FlipperLeft(paddle1Anchor3, paddle3, localPivotRight3, joint3);
+	// fourth flipper
+	
+	PhysBody* paddle4 = App->physics->CreateRectangle(200, 630, 10, 40);
+	float half_w_m4 = PIXEL_TO_METERS(paddle4->width);
+	float half_h_m4 = PIXEL_TO_METERS(paddle4->height);
+
+	b2Vec2 localPivotRight4(-half_w_m4, -half_h_m4);
+
+	PhysBody* paddle1Anchor4 = App->physics->CreateRectangleNo(40, 20, 5, 2);
+
+	b2RevoluteJoint* joint4 = App->physics->CreateJoint1(paddle1Anchor4->body, paddle4->body, localPivotRight4);
+	flipper4 = new FlipperLeft(paddle1Anchor4, paddle4, localPivotRight4, joint4);
+
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
 	int bg[210] ={
 	360, 1500,
@@ -514,6 +539,16 @@ update_status ModuleGame::Update()
 		else {
 			flipper1->Deactivate();
 			flipper2->Deactivate();
+		}
+		if (!IsKeyDown(KEY_A)) {
+			flipper3->Activate();
+			flipper4->Activate();
+			
+		}
+		else {
+			flipper3->Deactivate();
+			flipper4->Deactivate();
+			
 		}
 		//Caso para si la bola se queda atascada reinciarla
 		if (IsKeyPressed(KEY_R) && !ball.empty()) {

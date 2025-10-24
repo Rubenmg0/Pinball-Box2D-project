@@ -269,12 +269,37 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 
 	jointDef.enableMotor = true;
 	jointDef.motorSpeed = 0.0f; 
-	jointDef.maxMotorTorque = 100000.0f;
+	jointDef.maxMotorTorque = 500.0f;
 
 	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
 
 
 	return flipperJoint ;
+}
+b2RevoluteJoint* ModulePhysics::CreateJoint1(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
+
+
+	float restAngle = -120.0f * DEG2RAD;  // Bottom resting position
+
+	paddleAnchor->SetTransform(paddleAnchor->GetPosition(), restAngle);
+	paddle->SetTransform(paddle->GetPosition(), restAngle);
+	b2RevoluteJointDef jointDef;
+	b2Vec2 worldPivot = paddle->GetWorldPoint(pivot);
+	jointDef.Initialize(paddleAnchor, paddle, worldPivot);
+
+
+	jointDef.enableLimit = true;
+	jointDef.lowerAngle = 0.0f * DEG2RAD;
+	jointDef.upperAngle = 60.0f * DEG2RAD;
+
+	jointDef.enableMotor = true;
+	jointDef.motorSpeed = 0.0f;
+	jointDef.maxMotorTorque = 500.0f;
+
+	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
+
+
+	return flipperJoint;
 }
 void ModulePhysics::UpdateJoint(b2RevoluteJoint* flipperJoint) {
 

@@ -43,13 +43,13 @@ public:
 	bool CleanUp();
 
 	b2World* GetWorld() { return world; }
-
 	PhysBody* CreateCircle(int x, int y, int radius, float rebote);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleNo(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
 	b2RevoluteJoint* CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
+	b2RevoluteJoint* CreateJoint1(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot);
 	void DestroyBody(PhysBody* body);
 	void ModulePhysics::UpdateJoint(b2RevoluteJoint* flipperJoint);
 	/*PhysBody* CreatePaddle(int x, int y);*/
