@@ -469,10 +469,7 @@ bool ModuleGame::Start()
 	
 
 	LOG("LOAD SOUNDS");
-	App->audio->LoadFx("Assets/sounds/pinball-collision.mp3");
-	App->audio->LoadFx("Assets/sounds/pinball-collision2.wav");
-	App->audio->LoadFx("Assets/sounds/pinball-collision2_2.m4a");
-	App->audio->LoadFx("Assets/sounds/pinball-collision3.wav");
+	App->audio->LoadFx("Assets/sounds/pinball-collision.wav");
 
 	if (App->audio->musicOn)
 	{
@@ -493,24 +490,19 @@ bool ModuleGame::CleanUp()
 // Update: draw background
 update_status ModuleGame::Update()
 {
-	if (IsKeyPressed(KEY_N)) 
+	if (IsKeyPressed(KEY_N)) //Encender/Apagar Sonidos
 	{
 		App->audio->soundsOn = !App->audio->soundsOn;
 	}
-	if (IsKeyPressed(KEY_M)) 
+	if (IsKeyPressed(KEY_M)) //Encender/Apagar Musica
 	{
 		App->audio->musicOn = !App->audio->musicOn;
-		if (App->audio->musicOn)
-		{
-			PlayMusicStream(App->audio->GetMusic());
-		}
-		else
-		{
-			App->audio->StopMusic();
-		}
 	}
 
-
+	if (App->audio->musicOn) //Reproducir musica
+	{
+		UpdateMusicStream(App->audio->GetMusic());
+	}
 
 	switch (currentScreen) {
 	case GameScreen::START:
@@ -624,7 +616,7 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	if (App->audio->soundsOn)
 	{
-		App->audio->PlayFx(2); //Canviar Numero para canviar audio de rebote
+		App->audio->PlayFx(0); //Canviar Numero para canviar audio de rebote
 	}
 }
 
