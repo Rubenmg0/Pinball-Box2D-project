@@ -503,18 +503,27 @@ update_status ModuleGame::Update()
 
 	switch (currentScreen) {
 	case GameScreen::START:
-		start = App->physics->CreateRectangle(302, 405, 188, 30);
-		start->body->SetType(b2_staticBody);
-		if (IsKeyPressed(KEY_ENTER)) {
-			currentScreen = GameScreen::MENU;
+		if (start == nullptr)
+		{
+			start = App->physics->CreateRectangle(302, 405, 188, 30);
+			start->body->SetType(b2_staticBody);
 		}
 
+		if (IsKeyPressed(KEY_ENTER)) 
+		{
+			currentScreen = GameScreen::MENU;
+		}
 		break;
 
 	case GameScreen::MENU:
-		App->physics->DestroyBody(start);
-		start = nullptr;
-		if (IsKeyPressed(KEY_ENTER)) {
+		if (start != nullptr)
+		{
+			App->physics->GetWorld()->DestroyBody(start->body);
+			start = nullptr;
+		}
+
+		if (IsKeyPressed(KEY_ENTER)) 
+		{
 			currentScreen = GameScreen::GAMEPLAY;
 		}
 		break;
