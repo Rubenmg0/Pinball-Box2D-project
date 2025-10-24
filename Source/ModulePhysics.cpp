@@ -167,7 +167,7 @@ update_status ModulePhysics::PostUpdate()
 				}
 				break;
 
-				if (mouseSelected == nullptr && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 					if (f->TestPoint(pMouse)) {
 						TraceLog(LOG_INFO, "TEST");
 						mouseSelected = b;

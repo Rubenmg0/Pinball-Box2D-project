@@ -26,6 +26,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
+	void Reset();
 
 public:
 	GameScreen currentScreen;

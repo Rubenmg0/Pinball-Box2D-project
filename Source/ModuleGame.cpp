@@ -98,7 +98,7 @@ bool ModuleGame::Start()
 
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
 	
-	PhysBody* start = App->physics->CreateCircle(430, 370, 10, 0);
+	PhysBody* start = App->physics->CreateCircle(430, 370, 10, 0.5);
 
 
 	//firstFlipper
@@ -610,6 +610,10 @@ update_status ModuleGame::Update()
 
 		break;
 	case GameScreen::ENDING:
+		if (IsKeyPressed(KEY_ENTER)) {
+			Reset();
+			currentScreen = GameScreen::START;
+		}
 		break;
 	}
 
@@ -622,4 +626,9 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		App->audio->PlayFx(2); //Canviar Numero para canviar audio de rebote
 	}
+}
+
+void ModuleGame::Reset()
+{
+	remainingBalls = 3;
 }
