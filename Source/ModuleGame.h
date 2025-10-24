@@ -37,6 +37,8 @@ public:
 	bool sensed;
 
 	int remainingBalls = 3;
+	float maxvX = 50;
+	float maxvY = 50;
 
 	std::vector<PhysBody*> bodies;
 	std::vector<Circle*> ball;

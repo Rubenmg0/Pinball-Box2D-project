@@ -473,6 +473,7 @@ bool ModuleGame::Start()
 	App->audio->LoadFx("Assets/sounds/pinball-collision3.wav");
 
 
+
 	return true;
 }
 
@@ -487,11 +488,34 @@ bool ModuleGame::CleanUp()
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	if (IsKeyPressed(KEY_N)) 
+	{
+		App->audio->soundsOn = !App->audio->soundsOn;
+	}
+	if (IsKeyPressed(KEY_M)) 
+	{
+		App->audio->musicOn = !App->audio->musicOn;
+		if (App->audio->musicOn)
+		{
+			PlayMusicStream(App->audio->GetMusic());
+		}
+		else
+		{
+			App->audio->StopMusic();
+		}
+	}
+	if (App->audio->musicOn)
+	{
+		App->audio->PlayMusic("Assets/sounds/music.wav");
+	}
+
+
 	switch (currentScreen) {
 	case GameScreen::START:
 		if (IsKeyPressed(KEY_ENTER)) {
 			currentScreen = GameScreen::MENU;
 		}
+
 		break;
 
 	case GameScreen::MENU:
@@ -508,6 +532,24 @@ update_status ModuleGame::Update()
 			remainingBalls--;
 		}
 
+		if (abs(ball.front()->GetBody()->body->GetLinearVelocity().x) > maxvX)
+		{
+			b2Vec2 x;
+			if (ball.front()->GetBody()->body->GetLinearVelocity().x > maxvX)
+			{ x = { maxvX, 0 };}
+			else { x = { -maxvX, 0 };}
+			ball.front()->GetBody()->body->SetLinearVelocity(x);
+		}	
+		if (abs(ball.front()->GetBody()->body->GetLinearVelocity().y) > maxvY)
+		{
+			b2Vec2 x;
+			if (ball.front()->GetBody()->body->GetLinearVelocity().y > maxvY)
+			{
+				x = { maxvX, 0 };
+			}
+			else { x = { -maxvX, 0 }; }
+			ball.front()->GetBody()->body->SetLinearVelocity(x);
+		}
 
 		if (IsKeyPressed(KEY_DOWN) && !ball.empty() && ball.front()->impulso_inicial) // 2. Verificamos que la pelota exista para evitar errores
 		{
@@ -574,5 +616,8 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	App->audio->PlayFx(2); //Canviar Numero para canviar audio de rebote
+	if (App->audio->soundsOn)
+	{
+		App->audio->PlayFx(2); //Canviar Numero para canviar audio de rebote
+	}
 }

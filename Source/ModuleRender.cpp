@@ -51,49 +51,33 @@ update_status ModuleRender::Update()
 {
     ClearBackground(background);
 
-	switch (App->scene_intro->currentScreen) {
+    switch (App->scene_intro->currentScreen) {
 
-	case GameScreen::START:
+    case GameScreen::GAMEPLAY:
 
-		DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
-		break;
+        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
 
-    case GameScreen::MENU:
+        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
 
-        DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
-        break;
+        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
 
-	case GameScreen::GAMEPLAY:
+        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
 
-		DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-		DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
-        
-        DrawTextureEx(bumper, { 173, 185 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 173, 185 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 370, 185 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 370, 185 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 270, 130 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 270, 130 }, 0.0f, 1, WHITE);
-         
 
         for (int i = 0; i < App->scene_intro->remainingBalls; i++)
         {
-            DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i+1) -10, 10 }, 0, 1, WHITE);
+            DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i + 1) - 10, 10 }, 0, 1, WHITE);
         }
 
-        DrawTextEx(GetFontDefault(), "Score:", { 10, 30 },20, 1, WHITE);
+        DrawTextEx(GetFontDefault(), "Score:", { 10, 30 }, 20, 1, WHITE);
         DrawTextEx(GetFontDefault(), "HighScore:", { 10, 60 }, 20, 1, WHITE);
 
-		break;
-
-	case GameScreen::ENDING:
-        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
-
-		break;
-	}
+        break;
+    }
 
     // NOTE: This function setups render batching system for
     // maximum performance, all consecutive Draw() calls are
@@ -106,6 +90,24 @@ update_status ModuleRender::Update()
 // PostUpdate present buffer to screen
 update_status ModuleRender::PostUpdate()
 {
+    switch (App->scene_intro->currentScreen) {
+
+    case GameScreen::START:
+
+        DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
+        break;
+
+    case GameScreen::MENU:
+
+        DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
+        break;
+
+    case GameScreen::ENDING:
+        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
+
+        break;
+    }
     // Draw everything in our batch!
     DrawFPS(10, 10);
 
