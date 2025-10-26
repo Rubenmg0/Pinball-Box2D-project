@@ -3,6 +3,8 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleGame.h"
+#include "ModuleAudio.h"
+
 #include <math.h>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -101,19 +103,19 @@ update_status ModuleRender::PostUpdate()
 
         DrawTextureEx(inicio, { (0), (0) }, 0.0f, 1, WHITE);
         DrawTextureEx(play, { (100), (380) }, 0.0f, 1, WHITE);
-        if (App->scene_intro->sound_on == true)
+        if (App->audio->soundsOn) //True
         {
             DrawTextureEx(sound_on, { ((float)App->window->GetWidth() / 2 - 86), ((float)App->window->GetHeight() / 2 - 63) }, 0.0f, 1, WHITE);
         }
-        else if (App->scene_intro->sound_on == false)
+        else //False
         {
             DrawTextureEx(sound_off, { ((float)App->window->GetWidth() / 2 - 86), ((float)App->window->GetHeight() / 2 - 63) }, 0.0f, 1, WHITE);
         }
-        if (App->scene_intro->music_on == true)
+        if (App->audio->musicOn) //True
         {
             DrawTextureEx(music_on, { ((float)App->window->GetWidth() / 2 - 78), ((float)App->window->GetHeight() / 2 - 7) }, 0.0f, 1, WHITE);
         }
-        else if (App->scene_intro->music_on == false)
+        else  //False
         {
             DrawTextureEx(music_off, { ((float)App->window->GetWidth() / 2 - 78), ((float)App->window->GetHeight() / 2 - 7) }, 0.0f, 1, WHITE);
         }

@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
 #include "ModuleGame.h"
+#include "ModuleAudio.h"
 
 #include "p2Point.h"
 
@@ -177,14 +178,14 @@ update_status ModulePhysics::PostUpdate()
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(473) && pMousePosition.y < PIXEL_TO_METERS(517)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Sound : Off/On");
-					App->scene_intro->sound_on = !App->scene_intro->sound_on;
+					App->audio->soundsOn = !App->audio->soundsOn;
 					mouseSelect = b;
 				}
 			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(528) && pMousePosition.y < PIXEL_TO_METERS(572)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Music : Off/On");
-					App->scene_intro->music_on = !App->scene_intro->music_on;
+					App->audio->musicOn = !App->audio->musicOn;
 					mouseSelect = b;
 				}
 			}

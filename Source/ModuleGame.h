@@ -42,8 +42,6 @@ public:
 	FlipperLeft* flipper4;
 	PhysBody* sensor;
 	bool sensed;
-	bool sound_on = true;
-	bool music_on = true;
 
 	int remainingBalls = 3;
 	float maxvX = 50;

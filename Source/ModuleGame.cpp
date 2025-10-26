@@ -496,7 +496,7 @@ update_status ModuleGame::Update()
 		App->audio->musicOn = !App->audio->musicOn;
 	}
 
-	if (App->audio->musicOn && music_on == true) //Reproducir musica
+	if (App->audio->musicOn) //Reproducir musica
 	{
 		UpdateMusicStream(App->audio->GetMusic());
 	}
@@ -640,7 +640,7 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (App->audio->soundsOn && sound_on == true)
+	if (App->audio->soundsOn)
 	{
 		App->audio->PlayFx(0); //Canviar Numero para canviar audio de rebote
 	}
