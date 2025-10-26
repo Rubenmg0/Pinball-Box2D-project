@@ -27,6 +27,11 @@ public:
 	Texture pinball_Ball;
 	Texture fondo;
 	Texture inicio;
+	Texture play;
+	Texture sound_on;
+	Texture sound_off;
+	Texture music_on;
+	Texture music_off;
 	Texture menu;
 	Texture gameover;
 	Texture cohete;

@@ -24,7 +24,12 @@ bool ModuleRender::Init()
     pinball_Ball = LoadTexture("Assets/gadgets/pinball_Ball.png");
     cohete = LoadTexture("Assets/background/ship.png");
     fondo = LoadTexture("Assets/background/bg.png");
-    inicio = LoadTexture("Assets/background/metal-pinball_resized.png");
+    inicio = LoadTexture("Assets/background/title_resized.png");
+    play = LoadTexture("Assets/background/playbutton_resized.png");
+    sound_on = LoadTexture("Assets/background/sound-on.png");
+    sound_off = LoadTexture("Assets/background/sound-off.png");
+    music_on = LoadTexture("Assets/background/music-on.png");
+    music_off = LoadTexture("Assets/background/music-off.png");
     menu = LoadTexture("Assets/background/menu.png");
     gameover = LoadTexture("Assets/background/gameover.png");
 
@@ -52,7 +57,7 @@ update_status ModuleRender::Update()
     ClearBackground(background);
 
     switch (App->scene_intro->currentScreen) {
-
+   
     case GameScreen::GAMEPLAY:
 
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
@@ -94,14 +99,30 @@ update_status ModuleRender::PostUpdate()
 
     case GameScreen::START:
 
-        DrawTextureEx(inicio, { (-55), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(inicio, { (0), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(play, { (100), (380) }, 0.0f, 1, WHITE);
+        if (App->scene_intro->sound_on == true)
+        {
+            DrawTextureEx(sound_on, { ((float)App->window->GetWidth() / 2 - 86), ((float)App->window->GetHeight() / 2 - 63) }, 0.0f, 1, WHITE);
+        }
+        else if (App->scene_intro->sound_on == false)
+        {
+            DrawTextureEx(sound_off, { ((float)App->window->GetWidth() / 2 - 86), ((float)App->window->GetHeight() / 2 - 63) }, 0.0f, 1, WHITE);
+        }
+        if (App->scene_intro->music_on == true)
+        {
+            DrawTextureEx(music_on, { ((float)App->window->GetWidth() / 2 - 78), ((float)App->window->GetHeight() / 2 - 7) }, 0.0f, 1, WHITE);
+        }
+        else if (App->scene_intro->music_on == false)
+        {
+            DrawTextureEx(music_off, { ((float)App->window->GetWidth() / 2 - 78), ((float)App->window->GetHeight() / 2 - 7) }, 0.0f, 1, WHITE);
+        }
         break;
 
     case GameScreen::MENU:
 
         DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
         break;
-
     case GameScreen::ENDING:
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
         DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);

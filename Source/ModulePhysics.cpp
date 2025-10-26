@@ -167,10 +167,31 @@ update_status ModulePhysics::PostUpdate()
 				}
 				break;
 			}	
-			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(374) && pMousePosition.y < PIXEL_TO_METERS(435)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Inicio --> Menu : Correcto");
 					App->scene_intro->currentScreen = GameScreen::MENU;
+					mouseSelect = b;
+				}
+			}
+			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(473) && pMousePosition.y < PIXEL_TO_METERS(517)) {
+				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
+					TraceLog(LOG_INFO, "Sound : Off/On");
+					App->scene_intro->sound_on = !App->scene_intro->sound_on;
+					mouseSelect = b;
+				}
+			}
+			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(528) && pMousePosition.y < PIXEL_TO_METERS(572)) {
+				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
+					TraceLog(LOG_INFO, "Music : Off/On");
+					App->scene_intro->music_on = !App->scene_intro->music_on;
+					mouseSelect = b;
+				}
+			}
+			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(947) && pMousePosition.y < PIXEL_TO_METERS(1003)) {
+				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::MENU) {
+					TraceLog(LOG_INFO, "Menu --> Game : Correcto");
+					App->scene_intro->currentScreen = GameScreen::GAMEPLAY;
 					mouseSelect = b;
 				}
 			}

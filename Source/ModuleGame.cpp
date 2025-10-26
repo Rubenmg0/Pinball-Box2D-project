@@ -496,17 +496,21 @@ update_status ModuleGame::Update()
 		App->audio->musicOn = !App->audio->musicOn;
 	}
 
-	if (App->audio->musicOn) //Reproducir musica
+	if (App->audio->musicOn && music_on == true) //Reproducir musica
 	{
 		UpdateMusicStream(App->audio->GetMusic());
 	}
 
 	switch (currentScreen) {
 	case GameScreen::START:
-		if (start == nullptr)
+		if (start == nullptr && sound == nullptr && music == nullptr)
 		{
-			start = App->physics->CreateRectangle(302, 405, 188, 30);
+			start = App->physics->CreateRectangle(304, 405, 208, 29);
 			start->body->SetType(b2_staticBody);
+			sound = App->physics->CreateRectangle(302, 495, 87, 22);
+			sound->body->SetType(b2_staticBody);
+			music = App->physics->CreateRectangle(301, 550, 77, 22);
+			music->body->SetType(b2_staticBody);
 		}
 
 		if (IsKeyPressed(KEY_ENTER)) 
@@ -520,6 +524,14 @@ update_status ModuleGame::Update()
 		{
 			App->physics->GetWorld()->DestroyBody(start->body);
 			start = nullptr;
+			App->physics->GetWorld()->DestroyBody(sound->body);
+			sound = nullptr;
+			App->physics->GetWorld()->DestroyBody(music->body);
+			music = nullptr;
+		}
+		if (menu == nullptr) {
+			menu = App->physics->CreateRectangle(299, 975, 196, 28);
+			menu->body->SetType(b2_staticBody);
 		}
 
 		if (IsKeyPressed(KEY_ENTER)) 
@@ -530,6 +542,10 @@ update_status ModuleGame::Update()
 
 	case GameScreen::GAMEPLAY:
 		
+		if (menu != nullptr) {
+			App->physics->GetWorld()->DestroyBody(menu->body);
+			menu = nullptr;
+		}
 		if (ball.empty() && remainingBalls != 0) //Verificamos queno hay ningun pinball en pantalla
 		{
 			ball.emplace_back(new Circle(App->physics, 568, 920, this, App->renderer->pinball_Ball));
@@ -624,7 +640,7 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (App->audio->soundsOn)
+	if (App->audio->soundsOn && sound_on == true)
 	{
 		App->audio->PlayFx(0); //Canviar Numero para canviar audio de rebote
 	}
