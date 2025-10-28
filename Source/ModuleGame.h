@@ -27,7 +27,7 @@ public:
 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
 	void Reset();
-
+	void ScoreRefresh();
 public:
 	GameScreen currentScreen;
 
@@ -49,4 +49,9 @@ public:
 
 	std::vector<PhysBody*> bodies;
 	std::vector<Circle*> ball;
+
+	int score = 0;
+	int record = 0;
+	int pastScore = 0;
+
 };

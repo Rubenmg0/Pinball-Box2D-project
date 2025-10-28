@@ -569,6 +569,7 @@ update_status ModuleGame::Update()
 			}
 			else { x = { -maxvX, 0 }; }
 			ball.front()->GetBody()->body->SetLinearVelocity(x);
+
 		}
 
 		if (IsKeyPressed(KEY_DOWN) && !ball.empty() && ball.front()->impulso_inicial) // 2. Verificamos que la pelota exista para evitar errores
@@ -634,7 +635,8 @@ update_status ModuleGame::Update()
 		}
 		break;
 	}
-
+	
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -642,11 +644,24 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	if (App->audio->soundsOn)
 	{
+		score += 50;
 		App->audio->PlayFx(0); //Canviar Numero para canviar audio de rebote
 	}
+	
 }
 
 void ModuleGame::Reset()
 {
+	remainingBalls = 3;
+}
+
+void ModuleGame::ScoreRefresh()
+{
+	pastScore = score;
+	if (score > record)
+	{
+		record = score;
+	}
+	score = 0;
 	remainingBalls = 3;
 }

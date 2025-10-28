@@ -79,13 +79,10 @@ update_status ModuleRender::Update()
         {
             DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i + 1) - 10, 10 }, 0, 1, WHITE);
         }
-
-        DrawTextEx(GetFontDefault(), "Score:", { 10, 30 }, 20, 1, WHITE);
-        DrawTextEx(GetFontDefault(), "HighScore:", { 10, 60 }, 20, 1, WHITE);
-
         break;
-    }
 
+    }
+ 
     // NOTE: This function setups render batching system for
     // maximum performance, all consecutive Draw() calls are
     // not processed until EndDrawing() is called
@@ -133,6 +130,9 @@ update_status ModuleRender::PostUpdate()
     }
     // Draw everything in our batch!
     DrawFPS(10, 10);
+
+    DrawTextEx(GetFontDefault(), TextFormat("Score: %d", App->scene_intro->score), { 10, 30 }, 20, 1, YELLOW);
+    DrawTextEx(GetFontDefault(), TextFormat("Record: %d", App->scene_intro->record), { 10, 60 }, 20, 1, YELLOW);
 
     EndDrawing();
 

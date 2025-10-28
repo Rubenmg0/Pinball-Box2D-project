@@ -42,5 +42,5 @@ public:
 
 	Texture rollover;
 	Texture coins;
-	
+
 };
