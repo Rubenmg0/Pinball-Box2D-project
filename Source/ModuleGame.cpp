@@ -580,7 +580,7 @@ update_status ModuleGame::Update()
 			ball.front()->impulso_inicial = false;
 		}
 
-		for (Circle* b : ball) //////////////////ACTUALIZAR DE BODIES A BALL
+		for (Circle* b : ball)
 		{
 		float y = b->getPosY();
 			
@@ -595,7 +595,7 @@ update_status ModuleGame::Update()
 					LOG("No queda ninguna pelota\n")
 			}
 		}
-		if(IsKeyDown(KEY_D)){
+		if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){
 			flipper1->Activate();
 			flipper2->Activate();
 		}
@@ -603,7 +603,7 @@ update_status ModuleGame::Update()
 			flipper1->Deactivate();
 			flipper2->Deactivate();
 		}
-		if (!IsKeyDown(KEY_A)) {
+		if (!IsKeyDown(KEY_A) && !IsKeyDown(KEY_LEFT)) {
 			flipper3->Activate();
 			flipper4->Activate();
 			
