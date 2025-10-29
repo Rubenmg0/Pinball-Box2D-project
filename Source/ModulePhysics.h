@@ -31,7 +31,7 @@ public:
 };
 
 // Module --------------------------------------
-class ModulePhysics : public Module, public b2ContactListener // TODO
+class ModulePhysics : public Module, public b2ContactListener, public b2DestructionListener // TODO
 {
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);
@@ -56,11 +56,18 @@ public:
 
 	void BeginContact(b2Contact* contact) override;
 
+	//Funciones para dejar de arrastrar si la pelota sale del mapa
+	void SayGoodbye(b2Joint* joint) override;
+	void SayGoodbye(b2Fixture* fixture) override {}
+
 private:
 
 	bool debug;
 	b2World* world;
 	b2MouseJoint* mouse_joint;
+	b2MouseJoint* mouse_joint_ball;
+	b2Body* mouseSelect;
+	b2Body* mouseSelect_ball;
 	b2Body* ground;
 };
 

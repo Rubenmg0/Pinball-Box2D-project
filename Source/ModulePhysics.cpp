@@ -27,19 +27,25 @@ bool ModulePhysics::Start()
 	
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
+	world->SetDestructionListener(this);
 
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(150, 625);
 
-	b2Body* b = world->CreateBody(&body);
+	ground = world->CreateBody(&body);
 
 	b2CircleShape shape;
 	shape.m_radius = 1 * 0.5f;
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	b->CreateFixture(&fixture);
+	ground->CreateFixture(&fixture);
+
+	mouse_joint = nullptr;
+	mouse_joint_ball = nullptr;
+	mouseSelect = nullptr;
+	mouseSelect_ball = nullptr;
 
 	return true;
 }
@@ -71,7 +77,6 @@ update_status ModulePhysics::PostUpdate()
 	//	return UPDATE_CONTINUE;
 	//}
 
-	b2Body* mouseSelect = nullptr;
 	Vector2 mousePosition = GetMousePosition();
 	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y + 0.4));
 
@@ -168,40 +173,88 @@ update_status ModulePhysics::PostUpdate()
 				}
 				break;
 			}	
+			if (mouse_joint_ball == nullptr && mouseSelect_ball == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && App->scene_intro->currentScreen == GameScreen::GAMEPLAY) {
+
+				if (f->TestPoint(pMousePosition)) {
+					b2Shape* shape = f->GetShape();
+					if (shape->GetType() == b2Shape::e_circle && b->GetType() == b2_dynamicBody) {
+						mouseSelect_ball = b;
+					}
+				}
+			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(374) && pMousePosition.y < PIXEL_TO_METERS(435)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Inicio --> Menu : Correcto");
 					App->scene_intro->currentScreen = GameScreen::MENU;
-					mouseSelect = b;
 				}
 			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(473) && pMousePosition.y < PIXEL_TO_METERS(517)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Sound : Off/On");
 					App->audio->soundsOn = !App->audio->soundsOn;
-					mouseSelect = b;
 				}
 			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(528) && pMousePosition.y < PIXEL_TO_METERS(572)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::START) {
 					TraceLog(LOG_INFO, "Music : Off/On");
 					App->audio->musicOn = !App->audio->musicOn;
-					mouseSelect = b;
 				}
 			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(947) && pMousePosition.y < PIXEL_TO_METERS(1003)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::MENU) {
 					TraceLog(LOG_INFO, "Menu --> Game : Correcto");
 					App->scene_intro->currentScreen = GameScreen::GAMEPLAY;
-					mouseSelect = b;
 				}
 			}
 		}
 	}
 
+	if (mouseSelect_ball) {
+		b2MouseJointDef def;
+
+		def.bodyA = ground;
+		def.bodyB = mouseSelect_ball;
+		def.target = pMousePosition;
+		def.damping = 0.5f;
+		def.stiffness = 5.f;
+		def.maxForce = 100.f * mouseSelect_ball->GetMass();
+
+		mouse_joint_ball = (b2MouseJoint*)world->CreateJoint(&def);
+
+		mouseSelect_ball = nullptr;
+	}
+
+	else if (mouse_joint_ball && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		mouse_joint_ball->SetTarget(pMousePosition);
+		b2Vec2 anchorPosition = mouse_joint_ball->GetBodyB()->GetPosition();
+		anchorPosition.x = METERS_TO_PIXELS(anchorPosition.x);
+		anchorPosition.y = METERS_TO_PIXELS(anchorPosition.y);
+
+		DrawLine(anchorPosition.x, anchorPosition.y, mousePosition.x, mousePosition.y + 20, RED);
+	}
+
+	// TODO 4: If the player releases the mouse button, destroy the joint
+	else if (mouse_joint_ball != nullptr && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+		world->DestroyJoint(mouse_joint_ball);
+		mouse_joint_ball = nullptr;
+		mouseSelect_ball = nullptr;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
+void ModulePhysics::SayGoodbye(b2Joint* joint) //Sirve para que no crashee cuando arrastras una pelota fuera del mapa
+{
+	if (joint == mouse_joint_ball)
+	{
+		mouse_joint_ball = nullptr;
+	}
+
+	if (joint == mouse_joint)
+	{
+		mouse_joint = nullptr;
+	}
+}
 
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float rebote)
 {
