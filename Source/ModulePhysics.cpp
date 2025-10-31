@@ -71,7 +71,7 @@ update_status ModulePhysics::PostUpdate()
 	//}
 
 	Vector2 mousePosition = GetMousePosition();
-	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y + 0.4));
+	b2Vec2 pMousePosition = b2Vec2(PIXEL_TO_METERS(mousePosition.x), PIXEL_TO_METERS(mousePosition.y));
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
@@ -223,7 +223,7 @@ update_status ModulePhysics::PostUpdate()
 		anchorPosition.x = METERS_TO_PIXELS(anchorPosition.x);
 		anchorPosition.y = METERS_TO_PIXELS(anchorPosition.y);
 
-		DrawLine(anchorPosition.x, anchorPosition.y, mousePosition.x, mousePosition.y + 20, RED);
+		DrawLine(anchorPosition.x, anchorPosition.y, mousePosition.x, mousePosition.y, RED);
 	}
 
 	// TODO 4: If the player releases the mouse button, destroy the joint

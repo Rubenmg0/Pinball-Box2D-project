@@ -518,12 +518,8 @@ update_status ModuleGame::Update()
 			App->physics->GetWorld()->DestroyBody(music->body);
 			music = nullptr;
 		}
-		if (menu == nullptr) {
-			menu = App->physics->CreateRectangle(299, 975, 196, 28);
-			menu->body->SetType(b2_staticBody);
-		}
 
-		if (IsKeyPressed(KEY_ENTER)) 
+		if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
 			currentScreen = GameScreen::GAMEPLAY;
 		}
@@ -531,10 +527,6 @@ update_status ModuleGame::Update()
 
 	case GameScreen::GAMEPLAY:
 		
-		if (menu != nullptr) {
-			App->physics->GetWorld()->DestroyBody(menu->body);
-			menu = nullptr;
-		}
 		if (ball.empty() && remainingBalls != 0) //Verificamos queno hay ningun pinball en pantalla
 		{
 			ball.emplace_back(new Circle(App->physics, 568, 920, this, App->renderer->pinball_Ball));
@@ -584,7 +576,7 @@ update_status ModuleGame::Update()
 					LOG("No queda ninguna pelota\n")
 			}
 		}
-		if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){
+		if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && GetMousePosition().x <= App->renderer->camera.width / 2) {
 			flipper1->Activate();
 			flipper2->Activate();
 		}
