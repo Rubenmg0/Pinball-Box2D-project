@@ -54,13 +54,6 @@ update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
 
-	// TODO: HomeWork
-	/*
-	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
-	{
-	}
-	*/
-
 	return UPDATE_CONTINUE;
 }
 
@@ -264,6 +257,8 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float rebote)
 	body.type = b2_dynamicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+	body.bullet = true;
+
 
 	b2Body* b = world->CreateBody(&body);
 
@@ -405,7 +400,8 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, const int* points, int size)
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-	
+
+
 	b2Body* body = world->CreateBody(&bodyDef);
 
 	b2ChainShape chainShape;

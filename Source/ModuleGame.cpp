@@ -147,7 +147,7 @@ bool ModuleGame::Start()
 
 
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
-	int bg[210] ={
+		int bg[200] ={
 	360, 1500,
 	360, 1066,
 	531, 1016,
@@ -158,8 +158,7 @@ bool ModuleGame::Start()
 	532, 574,
 	462, 547,
 	510, 399,
-	523, 357,
-	527, 343,
+
 	529, 327,
 	531, 312,
 	531, 294,
@@ -189,11 +188,8 @@ bool ModuleGame::Start()
 	537, 257,
 	539, 274,
 	540, 285,
-	540, 304,
-	540, 323,
 	540, 935,
 	597, 935,
-	597, 288,
 	597, 268,
 	594, 248,
 	588, 227,
@@ -254,13 +250,12 @@ bool ModuleGame::Start()
 	246, 1068,
 	246, 1500
 	};
-	for (int i = 0; i < 210; i++) {
-	
+	for (int i = 0; i < 200; i++) 
+	{
 		PIXEL_TO_METERS(bg[i]);
-	
 	}
 
-	App->physics->CreateChain(0,0,bg, 210); //BackGround
+	App->physics->CreateChain(0,0,bg, 200); //BackGround
 
 	int palo1[90] = {
 	185, 106,
@@ -309,10 +304,9 @@ bool ModuleGame::Start()
 	155, 114,
 	178, 98
 	};
-	for (int i = 0; i < 90; i++) {
-
+	for (int i = 0; i < 90; i++) 
+	{
 		PIXEL_TO_METERS(palo1[i]);
-
 	}
 
 	App->physics->CreateChain(0, 0, palo1, 90);  //First loop
@@ -393,12 +387,10 @@ bool ModuleGame::Start()
 	163, 221,
 	159, 229,
 	152, 244
-
 	};
-	for (int i = 0; i < 150; i++) {
-
+	for (int i = 0; i < 150; i++) 
+	{
 		PIXEL_TO_METERS(palo2[i]);
-
 	}
 
 	App->physics->CreateChain(0, 0, palo2, 150); //Second loop -Mid-
@@ -412,10 +404,9 @@ bool ModuleGame::Start()
 		66, 953,
 		66, 789
 	};
-	for (int i = 0; i < 14; i++) {
-
+	for (int i = 0; i < 14; i++) 
+	{
 		PIXEL_TO_METERS(palo3[i]);
-
 	}
 
 	App->physics->CreateChain(0, 0, palo3, 14); // Left down "L" 
@@ -430,10 +421,9 @@ bool ModuleGame::Start()
 		133, 875,
 		133, 782
 	};
-	for (int i = 0; i < 16; i++) {
-
+	for (int i = 0; i < 16; i++) 
+	{
 		PIXEL_TO_METERS(palo4[i]);
-
 	}
 
 	App->physics->CreateChain(0, 0, palo4, 16); //Left down "triangle"
@@ -450,10 +440,9 @@ bool ModuleGame::Start()
 		423, 894,
 		469, 783
 	};
-	for (int i = 0; i < 20; i++) {
-
+	for (int i = 0; i < 20; i++)
+	{
 		PIXEL_TO_METERS(palo5[i]);
-
 	}
 	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
 	 

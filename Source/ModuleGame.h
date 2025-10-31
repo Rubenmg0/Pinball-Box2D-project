@@ -43,7 +43,7 @@ public:
 	PhysBody* sensor;
 	bool sensed;
 
-	int remainingBalls = 3;
+	int remainingBalls = 4;
 	float maxvX = 50;
 	float maxvY = 50;
 
