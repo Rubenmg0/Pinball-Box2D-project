@@ -446,11 +446,11 @@ bool ModuleGame::Start()
 	}
 	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
 	 
-	PhysBody* circle = App->physics->CreateCircle(205, 220, 30, 1.7f);
+	PhysBody* circle = App->physics->CreateCircle(205, 220, 30, 0.2f);
 	circle->body->SetType(b2_staticBody);
-	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30, 1.7f);
+	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30, 0.2f);
 	circle2->body->SetType(b2_staticBody);
-	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30, 1.7f);
+	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30, 0.2f);
 	circle3->body->SetType(b2_staticBody);
 	
 
