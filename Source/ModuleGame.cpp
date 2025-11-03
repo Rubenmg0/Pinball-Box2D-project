@@ -98,7 +98,7 @@ bool ModuleGame::Start()
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
 
 	//firstFlipper
-	PhysBody* paddle1 = App->physics->CreateRectangle(430, 370, 10, 40);;
+	PhysBody* paddle1 = App->physics->CreateRectangle(430, 360, 10, 30);;
 	float half_w_m = PIXEL_TO_METERS(paddle1->width);
 	float half_h_m = PIXEL_TO_METERS(paddle1->height);
 
@@ -110,7 +110,7 @@ bool ModuleGame::Start()
 	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
 
 	//secondFlipper
-	PhysBody* paddle2 = App->physics->CreateRectangle(360, 1000, 10, 50);;
+	PhysBody* paddle2 = App->physics->CreateRectangle(368, 1000, 10, 45);;
 	float half_w_m2 = PIXEL_TO_METERS(paddle2->width);
 	float half_h_m2 = PIXEL_TO_METERS(paddle2->height);
 
@@ -122,7 +122,7 @@ bool ModuleGame::Start()
 	flipper2 = new FlipperLeft(paddle1Anchor2, paddle2, localPivotRight2, joint2);
 
 	// third flipper
-	PhysBody* paddle3 = App->physics->CreateRectangle(240, 985, 10, 50);
+	PhysBody* paddle3 = App->physics->CreateRectangle(235, 980, 10, 45);
 	float half_w_m3 = PIXEL_TO_METERS(paddle3->width);
 	float half_h_m3 = PIXEL_TO_METERS(paddle3->height);
 
@@ -134,7 +134,7 @@ bool ModuleGame::Start()
 	flipper3 = new FlipperLeft(paddle1Anchor3, paddle3, localPivotRight3, joint3);
 	// fourth flipper
 
-	PhysBody* paddle4 = App->physics->CreateRectangle(200, 630, 10, 40);
+	PhysBody* paddle4 = App->physics->CreateRectangle(200, 630, 10, 30);
 	float half_w_m4 = PIXEL_TO_METERS(paddle4->width);
 	float half_h_m4 = PIXEL_TO_METERS(paddle4->height);
 
