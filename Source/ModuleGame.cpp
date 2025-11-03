@@ -134,7 +134,7 @@ bool ModuleGame::Start()
 	flipper3 = new FlipperLeft(paddle1Anchor3, paddle3, localPivotRight3, joint3);
 	// fourth flipper
 
-	PhysBody* paddle4 = App->physics->CreateRectangle(200, 630, 10, 30);
+	PhysBody* paddle4 = App->physics->CreateRectangle(200, 640, 10, 30);
 	float half_w_m4 = PIXEL_TO_METERS(paddle4->width);
 	float half_h_m4 = PIXEL_TO_METERS(paddle4->height);
 
