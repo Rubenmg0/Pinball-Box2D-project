@@ -34,6 +34,7 @@ bool ModuleRender::Init()
     music_off = LoadTexture("Assets/background/music-off.png");
     menu = LoadTexture("Assets/background/menu.png");
     gameover = LoadTexture("Assets/background/gameover.png");
+    restartButton = LoadTexture("Assets/background/restartbutton.png");
 
     //Texturas con animación
     bumper = LoadTexture("Assets/scores/bumper.png");
@@ -81,6 +82,24 @@ update_status ModuleRender::Update()
         }
         break;
 
+    case GameScreen::ENDING:
+        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
+        DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
+        DrawTextureEx(restartButton, { (230), (540) }, 0.0f, 1, WHITE);
+
+        break;
+    
     }
  
     // NOTE: This function setups render batching system for
@@ -122,11 +141,23 @@ update_status ModuleRender::PostUpdate()
 
         DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
         break;
-    case GameScreen::ENDING:
+    /*case GameScreen::ENDING:
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
+        DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
 
-        break;
+        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
+        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
+
+        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
+        DrawTextureEx(restartButton, { (230), (540) }, 0.0f, 1, WHITE);
+
+        break;*/
     }
     // Draw everything in our batch!
     DrawFPS(10, 10);

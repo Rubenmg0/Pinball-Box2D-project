@@ -34,6 +34,7 @@ public:
 	Texture music_off;
 	Texture menu;
 	Texture gameover;
+	Texture restartButton;
 	Texture cohete;
 
 	Texture bumper;

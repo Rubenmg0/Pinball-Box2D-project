@@ -194,9 +194,9 @@ update_status ModulePhysics::PostUpdate()
 				}
 			}
 			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(947) && pMousePosition.y < PIXEL_TO_METERS(1003)) {
-				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::MENU) {
-					TraceLog(LOG_INFO, "Menu --> Game : Correcto");
-					App->scene_intro->currentScreen = GameScreen::GAMEPLAY;
+				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::ENDING) {
+					TraceLog(LOG_INFO, "Ending --> Start : Correcto");
+					App->scene_intro->currentScreen = GameScreen::START;
 				}
 			}
 		}

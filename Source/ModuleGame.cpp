@@ -494,6 +494,11 @@ update_status ModuleGame::Update()
 
 	switch (currentScreen) {
 	case GameScreen::START:
+		if (restartbutt != nullptr)
+		{
+			App->physics->GetWorld()->DestroyBody(restartbutt->body);
+			restartbutt = nullptr;
+		}
 		if (start == nullptr && sound == nullptr && music == nullptr)
 		{
 			start = App->physics->CreateRectangle(304, 405, 208, 29);
@@ -523,6 +528,7 @@ update_status ModuleGame::Update()
 
 		if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
+			TraceLog(LOG_INFO, "Menu --> Game : Correcto");
 			currentScreen = GameScreen::GAMEPLAY;
 		}
 		break;
@@ -605,6 +611,11 @@ update_status ModuleGame::Update()
 
 		break;
 	case GameScreen::ENDING:
+		if (restartbutt == nullptr)
+		{
+			restartbutt = App->physics->CreateCircle(294, 604, 52, 52);
+			restartbutt->body->SetType(b2_staticBody);
+		}
 		if (IsKeyPressed(KEY_ENTER)) {
 			Reset();
 			currentScreen = GameScreen::START;

@@ -35,6 +35,7 @@ public:
 	PhysBody* sound = nullptr;
 	PhysBody* music = nullptr;
 	PhysBody* menu = nullptr;
+	PhysBody* restartbutt = nullptr;
 
 	FlipperLeft* flipper1;
 	FlipperLeft* flipper2;
