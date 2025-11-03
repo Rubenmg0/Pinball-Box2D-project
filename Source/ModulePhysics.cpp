@@ -332,6 +332,33 @@ PhysBody* ModulePhysics::CreateRectangleNo(int x, int y, int width, int height)
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+{
+	b2BodyDef boxBodyDef;
+	boxBodyDef.type = b2_staticBody;
+	boxBodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&boxBodyDef);
+
+	b2PolygonShape boxShape;
+	boxShape.SetAsBox(PIXEL_TO_METERS(width), PIXEL_TO_METERS(height));
+
+	b2FixtureDef boxFixture;
+	boxFixture.shape = &boxShape;
+	boxFixture.density = 1.0f;
+	boxFixture.isSensor = true;
+	b->CreateFixture(&boxFixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	pbody->width = (int)(width * 0.5f);
+	pbody->height = (int)(height * 0.5f);
+
+	boxBodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+
+	return pbody;
+}
+
 b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
 
 	

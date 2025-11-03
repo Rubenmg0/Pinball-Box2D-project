@@ -40,8 +40,9 @@ public:
 	FlipperLeft* flipper2;
 	FlipperLeft* flipper3;
 	FlipperLeft* flipper4;
-	PhysBody* sensor;
-	bool sensed;
+
+	PhysBody* sensorWall;
+	bool inGame = false;
 
 	int remainingBalls = 4;
 	float maxvX = 50;
