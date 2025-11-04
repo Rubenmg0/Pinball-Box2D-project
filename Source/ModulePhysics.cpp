@@ -131,14 +131,15 @@ update_status ModulePhysics::PostUpdate()
 					for(int32 i = 0; i < count; ++i)
 					{
 						v = b->GetWorldPoint(polygonShape->m_vertices[i]);
-						if(i > 0)
+						if(i > 0 && debug)
 							DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(polygonShape->m_vertices[0]);
-
-					DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
+					if (debug) {
+						DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
+					}
 				}
 				break;
 

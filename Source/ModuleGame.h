@@ -80,6 +80,12 @@ public:
 	std::vector<Circle*> ball;
 
 	int score = 0;
+	bool touchedGreen = false;
+	bool touchedRed = false;
+	int greenTime = 0;   
+	int redTime = 0;
+	int comboStartTime = 0;
+
 	int record = 0;
 	int pastScore = 0;
 

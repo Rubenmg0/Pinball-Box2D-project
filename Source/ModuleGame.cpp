@@ -618,6 +618,7 @@ update_status ModuleGame::Update()
 		}
 		if (IsKeyPressed(KEY_ENTER)) {
 			Reset();
+			ScoreRefresh();
 			currentScreen = GameScreen::START;
 		}
 		break;
@@ -629,6 +630,7 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	
 	if (App->audio->soundsOn)
 	{
 		App->audio->PlayFx(0); //Cambiar Numero para canviar audio de rebote
@@ -638,13 +640,25 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		if (bodyB->body->GetFixtureList()->IsSensor()) { //Detecta Sensores (Circulos Verdes)
 			score += 1000;
+			touchedGreen = true;
 		}
 		else if (true) // Detectar circulos rojos (TODO)
 		{
-
+			score += 500;
+			touchedRed = true;
 		}
 	}
 
+	if (touchedGreen && touchedRed)
+	{
+		// Combo activado, bonificación extra o efecto
+		score += 2000;  // Añadimos una bonificación por el combo
+		App->audio->PlayFx(0);
+
+		// Reseteamos los flags para el próximo combo
+		touchedGreen = false;
+		touchedRed = false;
+	}
 }
 
 void ModuleGame::Reset()
@@ -660,5 +674,4 @@ void ModuleGame::ScoreRefresh()
 		record = score;
 	}
 	score = 0;
-	remainingBalls = 3;
 }
