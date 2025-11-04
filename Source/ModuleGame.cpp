@@ -629,15 +629,22 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	score += 50;
 	if (App->audio->soundsOn)
 	{
 		App->audio->PlayFx(0); //Cambiar Numero para canviar audio de rebote
 	}
 	
-	if (bodyA->body->GetType() == b2_kinematicBody) { //No funciona
-		score += 1000;
+	if (bodyB != NULL)
+	{
+		if (bodyB->body->GetFixtureList()->IsSensor()) { //Detecta Sensores (Circulos Verdes)
+			score += 1000;
+		}
+		else if (true) // Detectar circulos rojos (TODO)
+		{
+
+		}
 	}
+
 }
 
 void ModuleGame::Reset()
