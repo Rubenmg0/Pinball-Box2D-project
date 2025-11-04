@@ -493,9 +493,6 @@ bool ModuleGame::CleanUp()
 
 	return true;
 
-	
-
-	return true;
 }
 
 // Update: draw background
