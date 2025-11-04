@@ -56,4 +56,9 @@ public:
 	int record = 0;
 	int pastScore = 0;
 
+	bool showAltBumperTexture;
+	bool showAltRolloverTexture;
+
+	float animationTimer;
+	float animationInterval;
 };

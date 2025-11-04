@@ -97,13 +97,21 @@ update_status ModulePhysics::PostUpdate()
 					Rectangle sourceRec = { 0.0f, 0.0f, (float)App->renderer->pinball_Ball.width, (float)App->renderer->pinball_Ball.height };
 					Rectangle destRec = { METERS_TO_PIXELS(pos.x)- sec.width/2 ,METERS_TO_PIXELS(pos.y)-sec.height/2, METERS_TO_PIXELS(pos.x)+sec.width/2, METERS_TO_PIXELS(pos.y)+sec.height/2 };
 					Vector2 origin= { (float)App->renderer->pinball_Ball.width/2, (float)App->renderer->pinball_Ball.height/2 };
-					//App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle,16,16); //Dibuixat de texura pinball_Ball
-					if (f->GetBody()->GetType() != b2_staticBody)
+					
+					if (f->GetBody()->GetType() == b2_kinematicBody)
+					{
+						if (App->scene_intro->showAltRolloverTexture) {
+							App->renderer->Draw(App->renderer->rollover1, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle, 25, 25);
+						}
+						else {
+							App->renderer->Draw(App->renderer->rollover, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle, 25, 25);
+						}
+					}
+					if (f->GetBody()->GetType() != b2_staticBody && f->GetBody()->GetType() != b2_kinematicBody)
 					{
 						App->renderer->Draw(App->renderer->pinball_Ball, METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), 0, angle, 16, 16);
 					}
-					//DrawTexturePro(App->renderer->pinball_Ball, sourceRec, destRec, origin, angle, WHITE);
-
+					
 
 					if (debug) // Si en debug
 					{
@@ -125,11 +133,11 @@ update_status ModulePhysics::PostUpdate()
 						v = b->GetWorldPoint(polygonShape->m_vertices[i]);
 						if(i > 0)
 							DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
-
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(polygonShape->m_vertices[0]);
+
 					DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), RED);
 				}
 				break;
@@ -149,8 +157,6 @@ update_status ModulePhysics::PostUpdate()
 					}
 
 					v = b->GetWorldPoint(shape->m_vertices[0]);
-
-					//DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), YELLOW); // ESTO NO SIRVE
 				}
 				break;
 
@@ -193,9 +199,10 @@ update_status ModulePhysics::PostUpdate()
 					App->audio->musicOn = !App->audio->musicOn;
 				}
 			}
-			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && pMousePosition.y > PIXEL_TO_METERS(947) && pMousePosition.y < PIXEL_TO_METERS(1003)) {
+			if (mouse_joint == nullptr && mouseSelect == nullptr && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && b->GetType() == b2Shape::e_circle && pMousePosition.y > PIXEL_TO_METERS(528)) {
 				if (f->TestPoint(pMousePosition) && App->scene_intro->currentScreen == GameScreen::ENDING) {
 					TraceLog(LOG_INFO, "Ending --> Start : Correcto");
+					App->scene_intro->Reset();
 					App->scene_intro->currentScreen = GameScreen::START;
 				}
 			}
@@ -523,5 +530,32 @@ void ModulePhysics::DestroyBody(PhysBody* body)
 	}
 }
 
+PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius)
+{
+    PhysBody* pbody = new PhysBody();
+
+    b2BodyDef body;
+    body.type = b2_staticBody; // Estático es suficiente si no tiene movimiento físico
+    body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+    body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+    // body.bullet = true; // No necesario en static/kinematic
+
+    b2Body* b = world->CreateBody(&body);
+
+    b2CircleShape shape;
+    shape.m_radius = PIXEL_TO_METERS(radius);
+    b2FixtureDef fixture;
+    fixture.shape = &shape;
+    fixture.density = 1.0f;
+    fixture.isSensor = true; // <-- ¡ESTO ES CLAVE!
+
+    b->CreateFixture(&fixture);
+
+    pbody->body = b;
+    pbody->width = pbody->height = radius;
+    pbody->body->SetType(b2_kinematicBody); // Si necesitas que sea cinemático para animarlo, déjalo aquí.
+
+    return pbody;
+}
 
 

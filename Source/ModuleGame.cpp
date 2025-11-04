@@ -446,12 +446,21 @@ bool ModuleGame::Start()
 	}
 	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
 	 
-	PhysBody* circle = App->physics->CreateCircle(205, 220, 30, 0.2f);
-	circle->body->SetType(b2_staticBody);
-	PhysBody* circle2 = App->physics->CreateCircle(305, 170, 30, 0.2f);
-	circle2->body->SetType(b2_staticBody);
-	PhysBody* circle3 = App->physics->CreateCircle(405, 220, 30, 0.2f);
-	circle3->body->SetType(b2_staticBody);
+	PhysBody* redCircle = App->physics->CreateCircle(205, 220, 30, 0.2f);
+	redCircle->body->SetType(b2_staticBody);
+	PhysBody* redCircle2 = App->physics->CreateCircle(305, 170, 30, 0.2f);
+	redCircle2->body->SetType(b2_staticBody);
+	PhysBody* redCircle3 = App->physics->CreateCircle(405, 220, 30, 0.2f);
+	redCircle3->body->SetType(b2_staticBody);
+
+	PhysBody* greenCircle = App->physics->CreateCircleSensor(220, 60, 25);
+	PhysBody* greenCircle2 = App->physics->CreateCircleSensor(300, 40, 25);
+	PhysBody* greenCircle3 = App->physics->CreateCircleSensor(380, 60, 25);
+
+	PhysBody* greenCircle4 = App->physics->CreateCircleSensor(190, 470, 25);
+	PhysBody* greenCircle5 = App->physics->CreateCircleSensor(310, 350, 25);
+	PhysBody* greenCircle6 = App->physics->CreateCircleSensor(420, 470, 25);
+	PhysBody* greenCircle7 = App->physics->CreateCircleSensor(310, 600, 25);
 	
 	sensorWall = App->physics->CreateRectangleNo(420, 65,3, 40);
 
@@ -463,6 +472,11 @@ bool ModuleGame::Start()
 	{
 		App->audio->PlayMusic("Assets/sounds/music.wav");
 	}
+	
+	showAltBumperTexture = false;
+	showAltRolloverTexture = false;
+	animationTimer = 0.0f;
+	animationInterval = 0.15f; //Cambiará cada 0.5 segundos
 
 	return true;
 }
@@ -478,6 +492,17 @@ bool ModuleGame::CleanUp()
 // Update: draw background
 update_status ModuleGame::Update()
 {
+	//Animaciones de los botones
+	animationTimer += GetFrameTime();
+
+	if (animationTimer >= animationInterval)
+	{
+		showAltBumperTexture = !showAltBumperTexture;
+		showAltRolloverTexture = !showAltRolloverTexture;
+
+		animationTimer = 0.0f;
+	}
+
 	if (IsKeyPressed(KEY_N)) //Encender/Apagar Sonidos
 	{
 		App->audio->soundsOn = !App->audio->soundsOn;
@@ -613,7 +638,7 @@ update_status ModuleGame::Update()
 	case GameScreen::ENDING:
 		if (restartbutt == nullptr)
 		{
-			restartbutt = App->physics->CreateCircle(294, 604, 52, 52);
+			restartbutt = App->physics->CreateCircle(296, 604, 52, 52);
 			restartbutt->body->SetType(b2_staticBody);
 		}
 		if (IsKeyPressed(KEY_ENTER)) {
@@ -629,17 +654,20 @@ update_status ModuleGame::Update()
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	score += 50;
 	if (App->audio->soundsOn)
 	{
-		score += 50;
-		App->audio->PlayFx(0); //Canviar Numero para canviar audio de rebote
+		App->audio->PlayFx(0); //Cambiar Numero para canviar audio de rebote
 	}
-
+	
+	if (bodyA->body->GetType() == b2_kinematicBody) { //No funciona
+		score += 1000;
+	}
 }
 
 void ModuleGame::Reset()
 {
-	remainingBalls = 3;
+	remainingBalls = 4;
 }
 
 void ModuleGame::ScoreRefresh()

@@ -35,13 +35,15 @@ public:
 	Texture menu;
 	Texture gameover;
 	Texture restartButton;
+	Texture ballBlocker;
 	Texture cohete;
 
 	Texture bumper;
 	Texture bumper1;
 
-
 	Texture rollover;
+	Texture rollover1;
+
 	Texture coins;
 
 };

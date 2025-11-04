@@ -35,12 +35,14 @@ bool ModuleRender::Init()
     menu = LoadTexture("Assets/background/menu.png");
     gameover = LoadTexture("Assets/background/gameover.png");
     restartButton = LoadTexture("Assets/background/restartbutton.png");
+    ballBlocker = LoadTexture("Assets/background/ballblocker.png");
 
     //Texturas con animación
     bumper = LoadTexture("Assets/scores/bumper.png");
     bumper1 = LoadTexture("Assets/scores/bumper1.png");
 
     rollover = LoadTexture("Assets/scores/rollover.png");
+    rollover1 = LoadTexture("Assets/scores/rollover1.png");
 
     //coins = LoadTexture("Assets/scores/.png");
 
@@ -66,38 +68,27 @@ update_status ModuleRender::Update()
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
         DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
 
-        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
+        if (App->scene_intro->showAltBumperTexture) {
+            //Mostrar la textura encendida
+            DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
+            DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
+            DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
+        }
+        else {
+            //Mostrar la textura apagada
+            DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
+            DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
+            DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
+        }
 
-        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
-
+        if (App->scene_intro->inGame) {
+            DrawTextureEx(ballBlocker, { 415, 20 }, 0.0f, 0.6f, WHITE);
+        }
 
         for (int i = 0; i < App->scene_intro->remainingBalls; i++)
         {
             DrawTextureEx(pinball_Ball, { (float)SCREEN_WIDTH - pinball_Ball.width * (i + 1) - 10, 10 }, 0, 1, WHITE);
         }
-        break;
-
-    case GameScreen::ENDING:
-        DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
-        DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 173, 190 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 173, 190 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 370, 190 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 370, 190 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(bumper, { 272, 140 }, 0.0f, 1, WHITE);
-        DrawTextureEx(bumper1, { 272, 140 }, 0.0f, 1, WHITE);
-
-        DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
-        DrawTextureEx(restartButton, { (230), (540) }, 0.0f, 1, WHITE);
-
         break;
     
     }
@@ -141,7 +132,7 @@ update_status ModuleRender::PostUpdate()
 
         DrawTextureEx(menu, { (0), (0) }, 0.0f, 1, WHITE);
         break;
-    /*case GameScreen::ENDING:
+    case GameScreen::ENDING:
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
         DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
 
@@ -157,7 +148,7 @@ update_status ModuleRender::PostUpdate()
         DrawTextureEx(gameover, { (20), (370) }, 0.0f, 0.80, WHITE);
         DrawTextureEx(restartButton, { (230), (540) }, 0.0f, 1, WHITE);
 
-        break;*/
+        break;
     }
     // Draw everything in our batch!
     DrawFPS(10, 10);

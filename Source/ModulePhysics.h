@@ -60,6 +60,8 @@ public:
 	void SayGoodbye(b2Joint* joint) override;
 	void SayGoodbye(b2Fixture* fixture) override {}
 
+	PhysBody* CreateCircleSensor(int x, int y, int radius);
+
 private:
 
 	bool debug;
@@ -70,4 +72,3 @@ private:
 	b2Body* mouseSelect_ball;
 	b2Body* ground;
 };
-
