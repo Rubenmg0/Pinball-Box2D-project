@@ -517,17 +517,46 @@ bool ModulePhysics::CleanUp()
 	LOG("Destroying physics world");
 
 	// TODO Delete the whole physics world!
+	if (world != nullptr)
+	{
+		for (b2Joint* j = world->GetJointList(); j; )
+		{
+			b2Joint* nextJoint = j->GetNext();
+			world->DestroyJoint(j);
+			j = nextJoint;
+		}
 
+		for (b2Body* b = world->GetBodyList(); b; )
+		{
+			b2Body* nextBody = b->GetNext();
+			world->DestroyBody(b);
+			b = nextBody;
+		}
+		delete world;
+		world = nullptr;
+	}
+
+	mouse_joint = nullptr;
+	mouse_joint_ball = nullptr;
+	mouseSelect = nullptr;
+	mouseSelect_ball = nullptr;
+	ground = nullptr;
 
 	return true;
+
 }
 
 void ModulePhysics::DestroyBody(PhysBody* body)
 {
-	if (body != nullptr && body->body != nullptr)
+	if (body != nullptr)
 	{
-		world->DestroyBody(body->body); // lo quita del mundo
-		body->body = nullptr;
+		if (body->body != nullptr) 
+		{
+			world->DestroyBody(body->body); // lo quita del mundo
+			body->body = nullptr;
+		}
+
+		delete body;
 	}
 }
 

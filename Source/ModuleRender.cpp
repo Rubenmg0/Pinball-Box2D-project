@@ -227,6 +227,26 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
+    UnloadTexture(pinball_Ball);
+    UnloadTexture(flipperR);
+    UnloadTexture(flipperL);
+
+    UnloadTexture(cohete);
+    UnloadTexture(fondo);
+    UnloadTexture(inicio);
+    UnloadTexture(play);
+    UnloadTexture(sound_on);
+    UnloadTexture(sound_off);
+    UnloadTexture(music_on);
+    UnloadTexture(music_off);
+    UnloadTexture(menu);
+    UnloadTexture(gameover);
+    UnloadTexture(restartButton);
+    UnloadTexture(ballBlocker);
+    UnloadTexture(bumper);
+    UnloadTexture(bumper1);
+    UnloadTexture(rollover);
+    UnloadTexture(rollover1);
 	return true;
 }
 

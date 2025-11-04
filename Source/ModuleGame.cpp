@@ -64,7 +64,8 @@ ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start
 }
 
 ModuleGame::~ModuleGame()
-{}
+{
+}
 
 // Load assets
 bool ModuleGame::Start() 
@@ -460,6 +461,39 @@ bool ModuleGame::Start()
 bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
+	/*
+	App->physics->DestroyBody(start);
+	App->physics->DestroyBody(menu);
+	App->physics->DestroyBody(sound);
+	App->physics->DestroyBody(music);
+	App->physics->DestroyBody(restartbutt);
+	App->physics->DestroyBody(flipper1->paddle1);
+	App->physics->DestroyBody(flipper2->paddle1);
+	App->physics->DestroyBody(flipper3->paddle1);
+	App->physics->DestroyBody(flipper4->paddle1);
+	App->physics->DestroyBody(flipper1->paddle1Anchor);
+	App->physics->DestroyBody(flipper2->paddle1Anchor);
+	App->physics->DestroyBody(flipper3->paddle1Anchor);
+	App->physics->DestroyBody(flipper4->paddle1Anchor);*/
+	/*App->physics->DestroyBody(sensorWall);*/
+	for (auto body : bodies)
+	{
+		if (body != nullptr)
+		{
+			App->physics->DestroyBody(body);
+		}
+	}
+	bodies.clear();
+
+	delete flipper1;
+	delete flipper2;
+	delete flipper3;
+	delete flipper4;
+	flipper1 = flipper2 = flipper3 = flipper4 = nullptr;
+
+	return true;
+
+	
 
 	return true;
 }
