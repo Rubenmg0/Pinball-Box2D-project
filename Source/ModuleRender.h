@@ -44,6 +44,8 @@ public:
 	Texture rollover;
 	Texture rollover1;
 
-	Texture coins;
+	Texture flipperR;
+	Texture flipperL;
 
+	Texture coins;
 };

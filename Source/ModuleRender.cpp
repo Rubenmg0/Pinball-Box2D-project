@@ -4,7 +4,7 @@
 #include "ModuleRender.h"
 #include "ModuleGame.h"
 #include "ModuleAudio.h"
-
+#include "ModulePhysics.h"
 #include <math.h>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -23,7 +23,12 @@ bool ModuleRender::Init()
 	bool ret = true;
 
     //Colocar texturas
+    //Gadgets
     pinball_Ball = LoadTexture("Assets/gadgets/pinball_Ball.png");
+    flipperR = LoadTexture("Assets/gadgets/Flipper_Right.png");
+    flipperL = LoadTexture("Assets/gadgets/Flipper_Left.png");
+
+    //BackGround y Menu
     cohete = LoadTexture("Assets/background/ship.png");
     fondo = LoadTexture("Assets/background/bg.png");
     inicio = LoadTexture("Assets/background/title_resized.png");
@@ -65,8 +70,66 @@ update_status ModuleRender::Update()
    
     case GameScreen::GAMEPLAY:
 
+        //Fondo
         DrawTextureEx(fondo, { (0), (0) }, 0.0f, 1, WHITE);
         DrawTextureEx(cohete, { (540), (935) }, 0.0f, 1, WHITE);
+
+        /* ----------------------------- Flippers ---------------------------------*/
+
+        // Flipper derecho superior
+        if (App->scene_intro->flipper1 != nullptr) {
+            int fx, fy;
+            App->scene_intro->flipper1->paddle1->GetPhysicPosition(fx, fy);
+            float angleDeg = App->scene_intro->flipper1->paddle1->GetRotation() * RAD2DEG + 100;
+
+            Rectangle src = { 0, 0, (float)flipperR.width, (float)flipperR.height };
+            Rectangle dst = { (float)fx, (float)fy, (float)flipperR.width / 1.8, (float)flipperR.height / 1.8 };
+            Vector2 origin = { (flipperR.width - 70 ) * 0.4f, (flipperR.height - 40) * 0.55f };
+
+            DrawTexturePro(flipperR, src, dst, origin, angleDeg, WHITE);
+        }
+        // Flipper izquierdo superior
+        if (App->scene_intro->flipper4 != nullptr) {
+            int fx, fy;
+            App->scene_intro->flipper4->paddle1->GetPhysicPosition(fx, fy);
+            float angleDeg = App->scene_intro->flipper4->paddle1->GetRotation() * RAD2DEG + 85;
+
+            Rectangle src = { 0, 0, (float)flipperL.width, (float)flipperL.height };
+            Rectangle dst = { (float)fx, (float)fy, (float)flipperL.width / 1.8, (float)flipperL.height / 1.8};
+            Vector2 origin = { (flipperL.width +80 ) * 0.2f, (flipperL.height - 40) * 0.55f };
+
+            DrawTexturePro(flipperL, src, dst, origin, angleDeg, WHITE);
+        }
+
+        // Flipper derecho inferior
+        if (App->scene_intro->flipper2 != nullptr) {
+            int fx, fy;
+            App->scene_intro->flipper2->paddle1->GetPhysicPosition(fx, fy);
+            float angleDeg = App->scene_intro->flipper2->paddle1->GetRotation() * RAD2DEG + 100;
+
+            Rectangle src = { 0, 0, (float)flipperR.width, (float)flipperR.height };
+            Rectangle dst = { (float)fx, (float)fy, (float)flipperR.width / 1.3, (float)flipperR.height / 1.3 };
+            Vector2 origin = { (flipperR.width + 80) * 0.25f, (flipperR.height - 25) * 0.6f };
+
+            DrawTexturePro(flipperR, src, dst, origin, angleDeg, WHITE);
+        }
+
+        // Flipper Izquierdo inferior
+        if (App->scene_intro->flipper3 != nullptr) {
+            int fx, fy;
+            App->scene_intro->flipper3->paddle1->GetPhysicPosition(fx, fy);
+            float angleDeg = App->scene_intro->flipper3->paddle1->GetRotation() * RAD2DEG + 85 ;
+
+            Rectangle src = { 0, 0, (float)flipperL.width, (float)flipperL.height };
+            Rectangle dst = { (float)fx, (float)fy , (float)flipperL.width / 1.3 , (float)flipperL.height /1.3 };
+            Vector2 origin = { (flipperL.width + 100) * 0.25f, (flipperL.height -20) * 0.6f };
+
+            DrawTexturePro(flipperL, src, dst, origin, angleDeg, WHITE);
+        }
+
+       
+
+
 
         if (App->scene_intro->showAltBumperTexture) {
             //Mostrar la textura encendida

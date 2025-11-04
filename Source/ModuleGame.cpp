@@ -56,32 +56,7 @@ private:
 	Texture2D texture;
 };
 
-class FlipperLeft
-{
-public:
-	FlipperLeft(PhysBody* paddleAnchor, PhysBody* paddle1, b2Vec2 pivot, b2RevoluteJoint* joint1) {
-		this->paddle1 = paddle1;
-		this->paddle1Anchor = paddleAnchor;
-		this->joint1 = joint1;
-		this->pivot = pivot;
-	}
-	PhysBody* paddle1Anchor;
-	PhysBody* paddle1;
-	b2Vec2 pivot;
 
-	b2RevoluteJoint* joint1;
-
-	void Activate() {
-		joint1->EnableMotor(true);
-		joint1->SetMotorSpeed(1000.0f);
-
-	}
-	void Deactivate() {
-		joint1->EnableMotor(true);
-		joint1->SetMotorSpeed(-1000.0f);
-
-	}
-};
 
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START)
 {
