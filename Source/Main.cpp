@@ -1,9 +1,19 @@
-#include "Application.h"
-#include "Globals.h"
+#define _CRTDBG_MAP_ALLOC
+
+#include <cstdlib>
+#include <crtdbg.h>
 
 #include "raylib.h"
-
+#include "Application.h"
+#include "Globals.h"
 #include <stdlib.h>
+
+#ifdef _DEBUG
+#define DBG_NEW new (_NORMAL_BLOCK , __FILE__ , __LINE__)
+
+#else
+#define DBG_NEW new
+#endif
 
 enum main_states
 {
@@ -13,6 +23,7 @@ enum main_states
 	MAIN_FINISH,
 	MAIN_EXIT
 };
+
 
 int main(int argc, char ** argv)
 {
@@ -81,9 +92,13 @@ int main(int argc, char ** argv)
 			break;
 
 		}
-	}
 
+	}
+	_CrtDumpMemoryLeaks();
 	delete App;
+
 	LOG("Exiting game '%s'...\n", TITLE);
+	if (!_CrtDumpMemoryLeaks())
+		LOG("No memory leaks detected!");
 	return main_return;
 }
