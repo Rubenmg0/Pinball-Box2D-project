@@ -69,20 +69,22 @@ ModuleGame::~ModuleGame() {}
 bool ModuleGame::Start()
 {
 	LOG("Loading Intro assets");
-	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
+
 
 	//firstFlipper
-	PhysBody* paddle1 = App->physics->CreateRectangle(430, 360, 10, 30);;
-	float half_w_m = PIXEL_TO_METERS(paddle1->width);
+	PhysBody* paddle1 = App->physics->CreateRectangle(430, 360, 10, 30); // La paddle es un rectángulo lo creamos en el punto que queremos que esté.
+	float half_w_m = PIXEL_TO_METERS(paddle1->width); //cogemos la mitad del ancho y alto en metros para que rote por la mitad
 	float half_h_m = PIXEL_TO_METERS(paddle1->height);
 
 	b2Vec2 localPivotRight(half_w_m, half_h_m);
 
-	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2);
+	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2); // creamos otro rectángulo que hará de ancla para que rote la palanca
 
-	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight);
-	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
-
+	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight); // y creamos la joint entre los dos cuerpos que es lo que las une
+	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1); // creamos lo que será la paddle
+	//
+	// HAREMOS LO MISMO CON LAS OTRAS JOINTS	
+	// 
 	//secondFlipper
 	PhysBody* paddle2 = App->physics->CreateRectangle(368, 1000, 10, 45);;
 	float half_w_m2 = PIXEL_TO_METERS(paddle2->width);
@@ -598,6 +600,7 @@ update_status ModuleGame::Update()
 		if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && GetMousePosition().x <= App->renderer->camera.width / 2) {
 			flipper1->Activate();
 			flipper2->Activate();
+			//si clicamos el botón se mueven a la posición activada
 		}
 		else {
 			flipper1->Deactivate();
@@ -606,7 +609,8 @@ update_status ModuleGame::Update()
 		if (!IsKeyDown(KEY_A) && !IsKeyDown(KEY_LEFT)) {
 			flipper3->Activate();
 			flipper4->Activate();
-
+			//como estas están en el lado contrario pero tienen toda la información igual que las otras lo que hacems es que esten siempre activadas y se deactiven al clicar el botón
+			// esto es porque las necesitamos al contrario
 		}
 		else {
 			flipper3->Deactivate();

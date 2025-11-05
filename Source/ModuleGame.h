@@ -22,7 +22,7 @@ public:
 		this->paddle1 = paddle1;
 		this->paddle1Anchor = paddleAnchor;
 		this->joint1 = joint1;
-		this->pivot = pivot;
+		this->pivot = pivot; //le metemos todo lo que necesitaría durante la creación
 	}
 	PhysBody* paddle1Anchor;
 	PhysBody* paddle1;
