@@ -596,7 +596,7 @@ update_status ModuleGame::Update()
 
 		if (IsKeyPressed(KEY_DOWN) && !ball.empty() && ball.front()->impulso_inicial) // 2. Verificamos que la pelota exista para evitar errores
 		{
-			b2Vec2 launchForce(0.0f, -9.0f);
+			b2Vec2 launchForce(0.0f, -8.2f);
 
 			ball.front()->ShootBall(launchForce);
 			ball.front()->impulso_inicial = false;
