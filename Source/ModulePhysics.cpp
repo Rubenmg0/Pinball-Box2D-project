@@ -10,6 +10,7 @@
 #include <math.h>
 
 
+
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	world = NULL;
@@ -17,9 +18,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 }
 
 // Destructor
-ModulePhysics::~ModulePhysics()
-{
-}
+ModulePhysics::~ModulePhysics() {}
 
 bool ModulePhysics::Start()
 {
@@ -543,7 +542,6 @@ bool ModulePhysics::CleanUp()
 	ground = nullptr;
 
 	return true;
-
 }
 
 void ModulePhysics::DestroyBody(PhysBody* body)

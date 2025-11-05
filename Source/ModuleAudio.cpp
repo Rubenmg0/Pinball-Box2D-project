@@ -76,8 +76,6 @@ void ModuleAudio::StopMusic()
 	StopMusicStream(music);
 }
 
-
-
 // Load WAV
 unsigned int ModuleAudio::LoadFx(const char* path)
 {

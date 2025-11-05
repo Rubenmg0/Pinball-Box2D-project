@@ -1,19 +1,21 @@
 #define _CRTDBG_MAP_ALLOC
-
-#include <cstdlib>
-#include <crtdbg.h>
-
-#include "raylib.h"
-#include "Application.h"
-#include "Globals.h"
 #include <stdlib.h>
+#include <crtdbg.h>
 
 #ifdef _DEBUG
 #define DBG_NEW new (_NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
 
 #else
 #define DBG_NEW new
 #endif
+
+#include <cstdlib>
+#include "raylib.h"
+#include "Application.h"
+#include "Globals.h"
+
+
 
 enum main_states
 {
@@ -27,9 +29,12 @@ enum main_states
 
 int main(int argc, char ** argv)
 {
+	#ifdef _DEBUG
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	#endif
+
 	LOG("Starting game '%s'...", TITLE);
 	SetTargetFPS(60); //Limitador FPS   //Cap FPS
-
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
@@ -94,8 +99,9 @@ int main(int argc, char ** argv)
 		}
 
 	}
-	_CrtDumpMemoryLeaks();
 	delete App;
+	App = nullptr;
+	_CrtDumpMemoryLeaks();
 
 	LOG("Exiting game '%s'...\n", TITLE);
 	if (!_CrtDumpMemoryLeaks())

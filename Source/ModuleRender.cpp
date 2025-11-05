@@ -7,14 +7,15 @@
 #include "ModulePhysics.h"
 #include <math.h>
 
+
+
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
     background = GRAY;
 }
 
 // Destructor
-ModuleRender::~ModuleRender()
-{}
+ModuleRender::~ModuleRender() {}
 
 // Called before render is available
 bool ModuleRender::Init()
@@ -57,7 +58,6 @@ bool ModuleRender::Init()
 // PreUpdate: clear buffer
 update_status ModuleRender::PreUpdate()
 {
-
 	return UPDATE_CONTINUE;
 }
 
@@ -126,10 +126,6 @@ update_status ModuleRender::Update()
 
             DrawTexturePro(flipperL, src, dst, origin, angleDeg, WHITE);
         }
-
-       
-
-
 
         if (App->scene_intro->showAltBumperTexture) {
             //Mostrar la textura encendida
@@ -227,10 +223,13 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
+    //Descargar texturas
+    //Gadgets
     UnloadTexture(pinball_Ball);
     UnloadTexture(flipperR);
     UnloadTexture(flipperL);
 
+    //BackGround y Menu
     UnloadTexture(cohete);
     UnloadTexture(fondo);
     UnloadTexture(inicio);
@@ -243,8 +242,11 @@ bool ModuleRender::CleanUp()
     UnloadTexture(gameover);
     UnloadTexture(restartButton);
     UnloadTexture(ballBlocker);
+
+    //Texturas con animación
     UnloadTexture(bumper);
     UnloadTexture(bumper1);
+
     UnloadTexture(rollover);
     UnloadTexture(rollover1);
 	return true;

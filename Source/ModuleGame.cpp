@@ -6,6 +6,8 @@
 #include "ModulePhysics.h"
 #include "box2d/b2_world.h"
 
+
+
 class PhysicEntity
 {
 protected:
@@ -58,14 +60,9 @@ private:
 
 
 
-ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START)
-{
-	
-}
+ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START){}
 
-ModuleGame::~ModuleGame()
-{
-}
+ModuleGame::~ModuleGame() {}
 
 // Load assets
 bool ModuleGame::Start() 
@@ -123,7 +120,7 @@ bool ModuleGame::Start()
 
 
 //---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
-		int bg[200] ={
+	int bg[200] ={
 	360, 1500,
 	360, 1066,
 	531, 1016,
@@ -457,25 +454,11 @@ bool ModuleGame::Start()
 	return true;
 }
 
-// Load assets
+// Unload assets
 bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
-	/*
-	App->physics->DestroyBody(start);
-	App->physics->DestroyBody(menu);
-	App->physics->DestroyBody(sound);
-	App->physics->DestroyBody(music);
-	App->physics->DestroyBody(restartbutt);
-	App->physics->DestroyBody(flipper1->paddle1);
-	App->physics->DestroyBody(flipper2->paddle1);
-	App->physics->DestroyBody(flipper3->paddle1);
-	App->physics->DestroyBody(flipper4->paddle1);
-	App->physics->DestroyBody(flipper1->paddle1Anchor);
-	App->physics->DestroyBody(flipper2->paddle1Anchor);
-	App->physics->DestroyBody(flipper3->paddle1Anchor);
-	App->physics->DestroyBody(flipper4->paddle1Anchor);*/
-	/*App->physics->DestroyBody(sensorWall);*/
+
 	for (auto body : bodies)
 	{
 		if (body != nullptr)
@@ -492,7 +475,6 @@ bool ModuleGame::CleanUp()
 	flipper1 = flipper2 = flipper3 = flipper4 = nullptr;
 
 	return true;
-
 }
 
 // Update: draw background
@@ -550,10 +532,13 @@ update_status ModuleGame::Update()
 		if (start != nullptr)
 		{
 			App->physics->GetWorld()->DestroyBody(start->body);
+			delete start;
 			start = nullptr;
 			App->physics->GetWorld()->DestroyBody(sound->body);
+			delete sound;
 			sound = nullptr;
 			App->physics->GetWorld()->DestroyBody(music->body);
+			delete music;
 			music = nullptr;
 		}
 
@@ -596,7 +581,9 @@ update_status ModuleGame::Update()
 			
 			if (y > 1085 && !ball.empty())
 			{
+
 				App->physics->DestroyBody(b->GetBody());
+				delete ball.front();
 				ball.pop_back();
 				
 				inGame = false;
@@ -630,6 +617,7 @@ update_status ModuleGame::Update()
 			for (Circle* b : ball)
 			{
 				App->physics->DestroyBody(b->GetBody());
+				delete ball.front();
 				ball.pop_back();
 				inGame = false;
 			}
