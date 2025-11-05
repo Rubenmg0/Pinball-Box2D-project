@@ -368,16 +368,16 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 
 b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle, b2Vec2 pivot) {
 
-	
-	float restAngle = -130.0f * DEG2RAD;  // Bottom resting position
+	//la joint es donde creamos todas las condiciones del flipper basicamente. Aqui ponemos todo lo que compone el flipper/paddle
+	float restAngle = -130.0f * DEG2RAD;  // Para que comience en este angulo
 
 	paddleAnchor->SetTransform(paddleAnchor->GetPosition(), restAngle);
 	paddle->SetTransform(paddle->GetPosition(), restAngle);
-	b2RevoluteJointDef jointDef;
-	b2Vec2 worldPivot = paddle->GetWorldPoint(pivot);
+	b2RevoluteJointDef jointDef; //creamos la jint con los bodies que la componen
+	b2Vec2 worldPivot = paddle->GetWorldPoint(pivot); 
 	jointDef.Initialize(paddleAnchor, paddle, worldPivot);
 	
-
+	//el motor speed y todo
 	jointDef.enableLimit = true;
 	jointDef.lowerAngle = 0.0f * DEG2RAD;
 	jointDef.upperAngle = 60.0f * DEG2RAD;
@@ -386,7 +386,6 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 	jointDef.motorSpeed = 0.0f; 
 	jointDef.maxMotorTorque = 500.0f;
 
-	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
 
 
 	return flipperJoint ;
