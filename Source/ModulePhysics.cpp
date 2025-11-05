@@ -531,10 +531,7 @@ bool ModulePhysics::CleanUp()
 
 			if (b->GetUserData().pointer != 0)
 			{
-				PhysBody* pbody = (PhysBody*)b->GetUserData().pointer;
-				delete pbody;
-				pbody = nullptr;
-				
+				b->GetUserData().pointer = 0;
 			}
 			world->DestroyBody(b);
 			b = nextBody; 
@@ -554,6 +551,8 @@ bool ModulePhysics::CleanUp()
 
 void ModulePhysics::DestroyBody(PhysBody* body)
 {
+	if (body == nullptr)
+		return;
 	if (body != nullptr)
 	{
 		if (body->body != nullptr) 
