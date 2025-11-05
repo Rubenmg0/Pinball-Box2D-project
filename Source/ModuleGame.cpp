@@ -33,9 +33,10 @@ public:
 	Circle(ModulePhysics* physics, int _x, int _y, Module* listener, Texture2D _texture)
 		: PhysicEntity(physics->CreateCircle(_x, _y, 14, 0.95f), listener) //Radio
 		, texture(_texture)
-	{	}
+	{
+	}
 
-	int getPosY() {		int x, y; body->GetPhysicPosition(x, y); return y;	}
+	int getPosY() { int x, y; body->GetPhysicPosition(x, y); return y; }
 	PhysBody* GetBody() { return body; }
 
 	void Update() override
@@ -60,12 +61,12 @@ private:
 
 
 
-ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START){}
+ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled), currentScreen(GameScreen::START) {}
 
 ModuleGame::~ModuleGame() {}
 
 // Load assets
-bool ModuleGame::Start() 
+bool ModuleGame::Start()
 {
 	LOG("Loading Intro assets");
 	/*b2Vec2 anchorPoint = ->GetWorldPoint(b2Vec2(150, 625)); */// left end
@@ -119,8 +120,8 @@ bool ModuleGame::Start()
 	flipper4 = new FlipperLeft(paddle1Anchor4, paddle4, localPivotRight4, joint4);
 
 
-//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
-	int bg[200] ={
+	//---------------------------------CREACIÓN FISICAS MAPA----------------------------------------//
+	int bg[200] = {
 	360, 1500,
 	360, 1066,
 	531, 1016,
@@ -223,12 +224,12 @@ bool ModuleGame::Start()
 	246, 1068,
 	246, 1500
 	};
-	for (int i = 0; i < 200; i++) 
+	for (int i = 0; i < 200; i++)
 	{
 		PIXEL_TO_METERS(bg[i]);
 	}
 
-	App->physics->CreateChain(0,0,bg, 200); //BackGround
+	App->physics->CreateChain(0, 0, bg, 200); //BackGround
 
 	int palo1[90] = {
 	185, 106,
@@ -277,7 +278,7 @@ bool ModuleGame::Start()
 	155, 114,
 	178, 98
 	};
-	for (int i = 0; i < 90; i++) 
+	for (int i = 0; i < 90; i++)
 	{
 		PIXEL_TO_METERS(palo1[i]);
 	}
@@ -361,14 +362,14 @@ bool ModuleGame::Start()
 	159, 229,
 	152, 244
 	};
-	for (int i = 0; i < 150; i++) 
+	for (int i = 0; i < 150; i++)
 	{
 		PIXEL_TO_METERS(palo2[i]);
 	}
 
 	App->physics->CreateChain(0, 0, palo2, 150); //Second loop -Mid-
 
-	int palo3[14] = { 
+	int palo3[14] = {
 		76, 789,
 		76, 860,
 		76, 928,
@@ -377,7 +378,7 @@ bool ModuleGame::Start()
 		66, 953,
 		66, 789
 	};
-	for (int i = 0; i < 14; i++) 
+	for (int i = 0; i < 14; i++)
 	{
 		PIXEL_TO_METERS(palo3[i]);
 	}
@@ -394,7 +395,7 @@ bool ModuleGame::Start()
 		133, 875,
 		133, 782
 	};
-	for (int i = 0; i < 16; i++) 
+	for (int i = 0; i < 16; i++)
 	{
 		PIXEL_TO_METERS(palo4[i]);
 	}
@@ -418,7 +419,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(palo5[i]);
 	}
 	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
-	 
+
 	PhysBody* redCircle = App->physics->CreateCircle(205, 220, 30, 0.2f);
 	redCircle->body->SetType(b2_staticBody);
 	PhysBody* redCircle2 = App->physics->CreateCircle(305, 170, 30, 0.2f);
@@ -434,8 +435,8 @@ bool ModuleGame::Start()
 	PhysBody* greenCircle5 = App->physics->CreateCircleSensor(310, 350, 25);
 	PhysBody* greenCircle6 = App->physics->CreateCircleSensor(420, 470, 25);
 	PhysBody* greenCircle7 = App->physics->CreateCircleSensor(310, 600, 25);
-	
-	sensorWall = App->physics->CreateRectangleNo(420, 65,3, 40);
+
+	sensorWall = App->physics->CreateRectangleNo(420, 65, 3, 40);
 
 
 	LOG("LOAD SOUNDS");
@@ -445,7 +446,7 @@ bool ModuleGame::Start()
 	{
 		App->audio->PlayMusic("Assets/sounds/music.wav");
 	}
-	
+
 	showAltBumperTexture = false;
 	showAltRolloverTexture = false;
 	animationTimer = 0.0f;
@@ -522,7 +523,7 @@ update_status ModuleGame::Update()
 			music->body->SetType(b2_staticBody);
 		}
 
-		if (IsKeyPressed(KEY_ENTER)) 
+		if (IsKeyPressed(KEY_ENTER))
 		{
 			currentScreen = GameScreen::MENU;
 		}
@@ -550,7 +551,7 @@ update_status ModuleGame::Update()
 		break;
 
 	case GameScreen::GAMEPLAY:
-	
+
 		sensorWall->body->SetEnabled(inGame);
 
 
@@ -577,15 +578,15 @@ update_status ModuleGame::Update()
 
 		for (Circle* b : ball)
 		{
-		float y = b->getPosY();
-			
+			float y = b->getPosY();
+
 			if (y > 1085 && !ball.empty())
 			{
 
 				App->physics->DestroyBody(b->GetBody());
 				delete ball.front();
 				ball.pop_back();
-				
+
 				inGame = false;
 
 				if (!ball.empty())
@@ -594,7 +595,7 @@ update_status ModuleGame::Update()
 					LOG("No queda ninguna pelota\n")
 			}
 		}
-		if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && GetMousePosition().x <= App->renderer->camera.width / 2) {
+		if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) || IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && GetMousePosition().x <= App->renderer->camera.width / 2) {
 			flipper1->Activate();
 			flipper2->Activate();
 		}
@@ -605,12 +606,12 @@ update_status ModuleGame::Update()
 		if (!IsKeyDown(KEY_A) && !IsKeyDown(KEY_LEFT)) {
 			flipper3->Activate();
 			flipper4->Activate();
-			
+
 		}
 		else {
 			flipper3->Deactivate();
 			flipper4->Deactivate();
-			
+
 		}
 		//Caso para si la bola se queda atascada reinciarla
 		if (IsKeyPressed(KEY_R) && !ball.empty()) {
@@ -642,43 +643,63 @@ update_status ModuleGame::Update()
 		}
 		break;
 	}
-	
-	
+
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	
+
+
+	static double comboStartTime = 0.0;   // Tiempo de inicio del combo
+	const double comboTimeLimit = 2.0;    // Límite de tiempo (en segundos)
+
 	if (App->audio->soundsOn)
 	{
-		App->audio->PlayFx(0); //Cambiar Numero para canviar audio de rebote
+		App->audio->PlayFx(0);
 	}
-	
+
 	if (bodyB != NULL)
 	{
-		if (bodyB->body->GetFixtureList()->IsSensor()) { //Detecta Sensores (Circulos Verdes)
-			score += 1000;
-			touchedGreen = true;
-		}
-		else if (true) // Detectar circulos rojos (TODO)
+		if (bodyB->body->GetFixtureList()->IsSensor())
 		{
-			score += 500;
+			score += 100;
+			touchedGreen = true;
+
+			// Si es el primer toque, iniciamos el temporizador del combo
+			if (!touchedRed)
+				comboStartTime = GetTime();
+		}
+		else // Detectar círculos rojos (TODO)
+		{
+			score += 50;
 			touchedRed = true;
+
+			// Si es el primer toque, iniciamos el temporizador del combo
+			if (!touchedGreen)
+				comboStartTime = GetTime();
 		}
 	}
 
+	// Si ambos fueron tocados, comprobamos si el combo está dentro del límite de tiempo
 	if (touchedGreen && touchedRed)
 	{
-		// Combo activado, bonificación extra o efecto
-		score += 2000;  // Añadimos una bonificación por el combo
-		App->audio->PlayFx(0);
+		double currentTime = GetTime();
+		if ((currentTime - comboStartTime) <= comboTimeLimit)
+		{
+			// Combo exitoso
+			score += 200;
+			App->audio->PlayFx(0);
+		}
 
-		// Reseteamos los flags para el próximo combo
+		// Reiniciamos
 		touchedGreen = false;
 		touchedRed = false;
+		comboStartTime = 0.0;
 	}
 }
+
 
 void ModuleGame::Reset()
 {
