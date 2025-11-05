@@ -526,14 +526,22 @@ bool ModulePhysics::CleanUp()
 
 		for (b2Body* b = world->GetBodyList(); b; )
 		{
-			b2Body* nextBody = b->GetNext();
+			b2Body* nextBody = b->GetNext(); 
+
+			if (b->GetUserData().pointer != 0)
+			{
+				PhysBody* pbody = (PhysBody*)b->GetUserData().pointer;
+				delete pbody;
+				pbody = nullptr;
+				
+			}
 			world->DestroyBody(b);
-			b = nextBody;
+			b = nextBody; 
 		}
+
 		delete world;
 		world = nullptr;
 	}
-
 	mouse_joint = nullptr;
 	mouse_joint_ball = nullptr;
 	mouseSelect = nullptr;

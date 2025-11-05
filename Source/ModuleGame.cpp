@@ -74,11 +74,18 @@ bool ModuleGame::Start()
 	//firstFlipper
 	PhysBody* paddle1 = App->physics->CreateRectangle(430, 360, 10, 30); // La paddle es un rectángulo lo creamos en el punto que queremos que esté.
 	float half_w_m = PIXEL_TO_METERS(paddle1->width); //cogemos la mitad del ancho y alto en metros para que rote por la mitad
-	float half_h_m = PIXEL_TO_METERS(paddle1->height);
+
+	bodies.push_back(paddle1);
+
 
 	b2Vec2 localPivotRight(half_w_m, half_h_m);
 
+
 	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2); // creamos otro rectángulo que hará de ancla para que rote la palanca
+	bodies.push_back(paddle1Anchor);
+	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight);
+	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
+
 
 	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight); // y creamos la joint entre los dos cuerpos que es lo que las une
 	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1); // creamos lo que será la paddle
@@ -86,37 +93,42 @@ bool ModuleGame::Start()
 	// HAREMOS LO MISMO CON LAS OTRAS JOINTS	
 	// 
 	//secondFlipper
-	PhysBody* paddle2 = App->physics->CreateRectangle(368, 1000, 10, 45);;
+	PhysBody* paddle2 = App->physics->CreateRectangle(368, 1000, 10, 45);
+	bodies.push_back(paddle2);
 	float half_w_m2 = PIXEL_TO_METERS(paddle2->width);
 	float half_h_m2 = PIXEL_TO_METERS(paddle2->height);
 
 	b2Vec2 localPivotRight2(half_w_m2, half_h_m2);
 
 	PhysBody* paddle1Anchor2 = App->physics->CreateRectangleNo(40, 20, 5, 2);
+	bodies.push_back(paddle1Anchor2);
 
 	b2RevoluteJoint* joint2 = App->physics->CreateJoint(paddle1Anchor2->body, paddle2->body, localPivotRight2);
 	flipper2 = new FlipperLeft(paddle1Anchor2, paddle2, localPivotRight2, joint2);
 
 	// third flipper
 	PhysBody* paddle3 = App->physics->CreateRectangle(235, 980, 10, 45);
+	bodies.push_back(paddle3);
 	float half_w_m3 = PIXEL_TO_METERS(paddle3->width);
 	float half_h_m3 = PIXEL_TO_METERS(paddle3->height);
 
 	b2Vec2 localPivotRight3(-half_w_m3, -half_h_m3);
 
 	PhysBody* paddle1Anchor3 = App->physics->CreateRectangleNo(40, 20, 5, 2);
-
+	bodies.push_back(paddle1Anchor3);
 	b2RevoluteJoint* joint3 = App->physics->CreateJoint1(paddle1Anchor3->body, paddle3->body, localPivotRight3);
 	flipper3 = new FlipperLeft(paddle1Anchor3, paddle3, localPivotRight3, joint3);
 	// fourth flipper
 
 	PhysBody* paddle4 = App->physics->CreateRectangle(200, 640, 10, 30);
+	bodies.push_back(paddle4);
 	float half_w_m4 = PIXEL_TO_METERS(paddle4->width);
 	float half_h_m4 = PIXEL_TO_METERS(paddle4->height);
 
 	b2Vec2 localPivotRight4(-half_w_m4, -half_h_m4);
 
 	PhysBody* paddle1Anchor4 = App->physics->CreateRectangleNo(40, 20, 5, 2);
+	bodies.push_back(paddle1Anchor4);
 
 	b2RevoluteJoint* joint4 = App->physics->CreateJoint1(paddle1Anchor4->body, paddle4->body, localPivotRight4);
 	flipper4 = new FlipperLeft(paddle1Anchor4, paddle4, localPivotRight4, joint4);
@@ -440,6 +452,24 @@ bool ModuleGame::Start()
 
 	sensorWall = App->physics->CreateRectangleNo(420, 65, 3, 40);
 
+	bodies.push_back(App->physics->CreateChain(0, 0, bg, 200));
+	bodies.push_back(App->physics->CreateChain(0, 0, palo1, 90));
+	bodies.push_back(App->physics->CreateChain(0, 0, palo2, 150));
+	bodies.push_back(App->physics->CreateChain(0, 0, palo3, 14));
+	bodies.push_back(App->physics->CreateChain(0, 0, palo4, 16));
+	bodies.push_back(App->physics->CreateChain(0, 0, palo5, 20));
+	bodies.push_back(redCircle);
+	bodies.push_back(redCircle2);
+	bodies.push_back(redCircle3);
+	bodies.push_back(App->physics->CreateCircleSensor(220, 60, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(300, 40, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(380, 60, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(190, 470, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(310, 350, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(420, 470, 25));
+	bodies.push_back(App->physics->CreateCircleSensor(310, 600, 25));
+	bodies.push_back(sensorWall);
+	
 
 	LOG("LOAD SOUNDS");
 	App->audio->LoadFx("Assets/sounds/pinball-collision.wav");
@@ -523,6 +553,10 @@ update_status ModuleGame::Update()
 			sound->body->SetType(b2_staticBody);
 			music = App->physics->CreateRectangle(301, 550, 77, 22);
 			music->body->SetType(b2_staticBody);
+
+			bodies.push_back(start);
+			bodies.push_back(sound);
+			bodies.push_back(music);
 		}
 
 		if (IsKeyPressed(KEY_ENTER))
@@ -639,6 +673,7 @@ update_status ModuleGame::Update()
 		{
 			restartbutt = App->physics->CreateCircle(296, 604, 52, 52);
 			restartbutt->body->SetType(b2_staticBody);
+			bodies.push_back(restartbutt);
 		}
 		if (IsKeyPressed(KEY_ENTER)) {
 			Reset();
