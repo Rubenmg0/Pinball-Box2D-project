@@ -386,6 +386,7 @@ b2RevoluteJoint* ModulePhysics::CreateJoint(b2Body* paddleAnchor, b2Body* paddle
 	jointDef.motorSpeed = 0.0f; 
 	jointDef.maxMotorTorque = 500.0f;
 
+	b2RevoluteJoint* flipperJoint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
 
 
 	return flipperJoint ;

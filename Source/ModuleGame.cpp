@@ -74,7 +74,7 @@ bool ModuleGame::Start()
 	//firstFlipper
 	PhysBody* paddle1 = App->physics->CreateRectangle(430, 360, 10, 30); // La paddle es un rectángulo lo creamos en el punto que queremos que esté.
 	float half_w_m = PIXEL_TO_METERS(paddle1->width); //cogemos la mitad del ancho y alto en metros para que rote por la mitad
-
+	float half_h_m = PIXEL_TO_METERS(paddle1->height);
 	bodies.push_back(paddle1);
 
 
@@ -83,8 +83,6 @@ bool ModuleGame::Start()
 
 	PhysBody* paddle1Anchor = App->physics->CreateRectangleNo(40, 20, 5, 2); // creamos otro rectángulo que hará de ancla para que rote la palanca
 	bodies.push_back(paddle1Anchor);
-	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight);
-	flipper1 = new FlipperLeft(paddle1Anchor, paddle1, localPivotRight, joint1);
 
 
 	b2RevoluteJoint* joint1 = App->physics->CreateJoint(paddle1Anchor->body, paddle1->body, localPivotRight); // y creamos la joint entre los dos cuerpos que es lo que las une
