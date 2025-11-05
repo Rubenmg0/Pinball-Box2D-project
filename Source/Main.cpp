@@ -27,11 +27,11 @@ enum main_states
 };
 
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
-	#ifdef _DEBUG
-		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	#endif
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
 	LOG("Starting game '%s'...", TITLE);
 	SetTargetFPS(60); //Limitador FPS   //Cap FPS
@@ -80,7 +80,7 @@ int main(int argc, char ** argv)
 			if (update_return == UPDATE_STOP)
 				state = MAIN_FINISH;
 		}
-			break;
+		break;
 
 		case MAIN_FINISH:
 
