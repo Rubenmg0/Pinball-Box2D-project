@@ -10,12 +10,12 @@ El objetivo del proyecto es replicar la jugabilidad clásica del pinball con fí
 
 ## ✨ Key Features
 
-- ⚙️ Física realista basada en Box2D: colisiones, rebotes y fuerzas aplicadas a la bola y elementos móviles.  
+- ⚙️ Física realista basada en Box2D: colisiones, rebotes y fuerzas aplicadas a la bola.  
 - 🕹️ Flippers y kicker controlables con entrada del usuario.
-- 🧮 Sistema de puntuación con combos y bonificaciones.  
-- 🧭 UI básica: puntuación actual, última puntuación y récord de sesión; menús de inicio, instrucciones y pantalla de fin de ronda.  
-- 🔊 Audio: efectos por colisiones y eventos, música de fondo.  
-- 🧰 Herramientas de depuración: F1 muestra hitboxes y activa mouse joint para arrastrar la bola.
+- 🧮 Sistema de puntuación con un combo: Si golpeas una pelota verde y una roja en menos de 3 sec.  
+- 🧭 UI básica: puntuación actual y récord de sesión; menús de inicio, instrucciones y pantalla de fin de ronda.  
+- 🔊 Audio: efectos por colisiones, música de fondo.  
+- 🧰 Herramientas de depuración: F1 muestra hitboxes, mouse joint para arrastrar la bola.
 
 ## 🎮 Controles
 
@@ -42,11 +42,13 @@ El objetivo del proyecto es replicar la jugabilidad clásica del pinball con fí
 
 ## 👩‍💻 Developers
 
-- **Jan** - 🧠   
-- **Ruben** - ⚙️   
-- **Marc** - 🎨  
-- **Queralt** - 🎵   
-- **Irene** - 🧪 
+| Desarrollador | GitHub | Aportaciones |
+|--------------|--------|--------------|
+| **Marc Jiménez** | [MarcJM-00](https://github.com/MarcJM-00) | Estados del juego, gestión de una sola bola y reseteo, corrección de fallos, interacción con el ratón, círculos verdes y animación de estos. |
+| **Irene Calatrava** | [irentren](https://github.com/irentren) | Creación e implementación de los flippers, depuración, diseño del mapa *pinball-1*. |
+| **Jan Corredor** | [JanCorredor](https://github.com/JanCorredor) | Música, sonido, corrección de errores, optimización, ajustes de física, limitación de FPS y parte de controles. |
+| **Queralt Escutilla** | [Keral06](https://github.com/Keral06) | Propulsión de la pelota, rebote con botones, corrección de *memory leaks*. |
+| **Rubén Mateo** | [Rubenmg0](https://github.com/Rubenmg0) | Mapa *pinball-2*, carga de texturas y background, render de flippers conectado con Box2D, sistema de puntos + combo, visualización de *memory leaks* e intento de GitHub Actions. |
 
 ## 📜 Licencia
 
