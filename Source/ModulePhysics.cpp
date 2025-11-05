@@ -571,10 +571,10 @@ PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius)
     PhysBody* pbody = new PhysBody();
 
     b2BodyDef body;
-    body.type = b2_staticBody; // Estático es suficiente si no tiene movimiento físico
+    body.type = b2_staticBody; 
     body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
     body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
-    // body.bullet = true; // No necesario en static/kinematic
+    
 
     b2Body* b = world->CreateBody(&body);
 
@@ -583,13 +583,13 @@ PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius)
     b2FixtureDef fixture;
     fixture.shape = &shape;
     fixture.density = 1.0f;
-    fixture.isSensor = true; // <-- ¡ESTO ES CLAVE!
+    fixture.isSensor = true; 
 
     b->CreateFixture(&fixture);
 
     pbody->body = b;
     pbody->width = pbody->height = radius;
-    pbody->body->SetType(b2_kinematicBody); // Si necesitas que sea cinemático para animarlo, déjalo aquí.
+    pbody->body->SetType(b2_kinematicBody); 
 
     return pbody;
 }

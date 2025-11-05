@@ -459,13 +459,13 @@ bool ModuleGame::Start()
 	bodies.push_back(redCircle);
 	bodies.push_back(redCircle2);
 	bodies.push_back(redCircle3);
-	bodies.push_back(App->physics->CreateCircleSensor(220, 60, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(300, 40, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(380, 60, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(190, 470, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(310, 350, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(420, 470, 25));
-	bodies.push_back(App->physics->CreateCircleSensor(310, 600, 25));
+	bodies.push_back(greenCircle);
+	bodies.push_back(greenCircle2);
+	bodies.push_back(greenCircle3);
+	bodies.push_back(greenCircle4);
+	bodies.push_back(greenCircle5);
+	bodies.push_back(greenCircle6);
+	bodies.push_back(greenCircle7);
 	bodies.push_back(sensorWall);
 	
 
@@ -480,7 +480,7 @@ bool ModuleGame::Start()
 	showAltBumperTexture = false;
 	showAltRolloverTexture = false;
 	animationTimer = 0.0f;
-	animationInterval = 0.15f; //Cambiará cada 0.5 segundos
+	animationInterval = 0.15f; //Cambiará cada 0.15 segundos
 
 	return true;
 }
@@ -498,7 +498,6 @@ bool ModuleGame::CleanUp()
 		}
 	}
 	bodies.clear();
-
 	delete flipper1;
 	delete flipper2;
 	delete flipper3;
