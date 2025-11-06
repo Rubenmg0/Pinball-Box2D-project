@@ -197,7 +197,7 @@ void b2World::DestroyBody(b2Body* b)
 	b->m_fixtureCount = 0;
 
 	// Remove world body list.
-	if (b->m_prev && b->m_prev != nullptr && b->m_next )
+	if (b->m_prev)
 	{
 		b->m_prev->m_next = b->m_next;
 	}

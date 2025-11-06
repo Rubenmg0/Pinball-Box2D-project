@@ -490,14 +490,14 @@ bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	//for (auto body : bodies)
-	//{
-	//	if (body != nullptr)
-	//	{
-	//		App->physics->DestroyBody(body);
-	//		body = nullptr;
-	//	}
-	//}
+	for (auto body : bodies)
+	{
+		if (body != nullptr)
+		{
+			App->physics->DestroyBody(body);
+			body = nullptr;
+		}
+	}
 	if(ball.size() > 0)
 	{
 		for (auto b : ball)
@@ -512,11 +512,7 @@ bool ModuleGame::CleanUp()
 		ball.clear();
 	}
 	bodies.clear();
-	/*delete flipper1;
-	delete flipper2;
-	delete flipper3;
-	delete flipper4;
-	flipper1 = flipper2 = flipper3 = flipper4 = nullptr;*/
+	
 
 	return true;
 }
@@ -565,9 +561,9 @@ update_status ModuleGame::Update()
 			music = App->physics->CreateRectangle(301, 550, 77, 22);
 			music->body->SetType(b2_staticBody);
 
-			bodies.push_back(start);
+			/*bodies.push_back(start);
 			bodies.push_back(sound);
-			bodies.push_back(music);
+			bodies.push_back(music);*/
 		}
 
 		if (IsKeyPressed(KEY_ENTER))
@@ -684,7 +680,7 @@ update_status ModuleGame::Update()
 		{
 			restartbutt = App->physics->CreateCircle(296, 604, 52, 52);
 			restartbutt->body->SetType(b2_staticBody);
-			bodies.push_back(restartbutt);
+			/*bodies.push_back(restartbutt);*/
 		}
 		if (IsKeyPressed(KEY_ENTER)) {
 			Reset();
