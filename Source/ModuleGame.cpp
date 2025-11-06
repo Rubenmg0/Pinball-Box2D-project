@@ -241,7 +241,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(bg[i]);
 	}
 
-	App->physics->CreateChain(0, 0, bg, 200); //BackGround
+	//App->physics->CreateChain(0, 0, bg, 200); //BackGround
 
 	int palo1[90] = {
 	185, 106,
@@ -295,7 +295,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(palo1[i]);
 	}
 
-	App->physics->CreateChain(0, 0, palo1, 90);  //First loop
+	//App->physics->CreateChain(0, 0, palo1, 90);  //First loop
 
 	int palo2[150] = {
 	143, 241,
@@ -379,7 +379,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(palo2[i]);
 	}
 
-	App->physics->CreateChain(0, 0, palo2, 150); //Second loop -Mid-
+	//App->physics->CreateChain(0, 0, palo2, 150); //Second loop -Mid-
 
 	int palo3[14] = {
 		76, 789,
@@ -395,7 +395,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(palo3[i]);
 	}
 
-	App->physics->CreateChain(0, 0, palo3, 14); // Left down "L" 
+	//App->physics->CreateChain(0, 0, palo3, 14); // Left down "L" 
 
 	int palo4[16] = {
 		138, 784,
@@ -412,7 +412,7 @@ bool ModuleGame::Start()
 		PIXEL_TO_METERS(palo4[i]);
 	}
 
-	App->physics->CreateChain(0, 0, palo4, 16); //Left down "triangle"
+	//App->physics->CreateChain(0, 0, palo4, 16); //Left down "triangle"
 
 	int palo5[20] = {
 		474, 783,
@@ -430,7 +430,7 @@ bool ModuleGame::Start()
 	{
 		PIXEL_TO_METERS(palo5[i]);
 	}
-	App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
+	//App->physics->CreateChain(0, 0, palo5, 20); //Right down "triangle"
 
 	PhysBody* redCircle = App->physics->CreateCircle(205, 220, 30, 0.2f);
 	redCircle->body->SetType(b2_staticBody);
@@ -490,13 +490,14 @@ bool ModuleGame::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	for (auto body : bodies)
-	{
-		if (body != nullptr)
-		{
-			App->physics->DestroyBody(body);
-		}
-	}
+	//for (auto body : bodies)
+	//{
+	//	if (body != nullptr)
+	//	{
+	//		App->physics->DestroyBody(body);
+	//		body = nullptr;
+	//	}
+	//}
 	if(ball.size() > 0)
 	{
 		for (auto b : ball)
