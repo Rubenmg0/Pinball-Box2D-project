@@ -45,7 +45,7 @@ El objetivo del proyecto es replicar la jugabilidad clásica del pinball con fí
 | Desarrollador | GitHub | Aportaciones |
 |--------------|--------|--------------|
 | **Marc Jiménez** | [MarcJM-00](https://github.com/MarcJM-00) | Estados del juego, gestión de una sola bola y reseteo, corrección de fallos, interacción con el ratón, círculos verdes y animación de estos. |
-| **Irene Calatrava** | [irentren](https://github.com/irentren) | Creación e implementación de los flippers, depuración, diseño del mapa *pinball-1*. |
+| **Irene Calatrava** | [irentren](https://github.com/irentren) | Creación e implementación de los flippers, arreglo de los errores de *memory leaks* , diseño del mapa *pinball-1*. |
 | **Jan Corredor** | [JanCorredor](https://github.com/JanCorredor) | Música, sonido, corrección de errores, optimización, ajustes de física, limitación de FPS y parte de controles. |
 | **Queralt Escutilla** | [Keral06](https://github.com/Keral06) | Propulsión de la pelota, rebote con botones, corrección de *memory leaks*. |
 | **Rubén Mateo** | [Rubenmg0](https://github.com/Rubenmg0) | Mapa *pinball-2*, carga de texturas y background, render de flippers conectado con Box2D, sistema de puntos + combo, visualización de *memory leaks* e intento de GitHub Actions. |
