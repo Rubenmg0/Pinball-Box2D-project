@@ -514,19 +514,48 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 bool ModulePhysics::CleanUp()
 {
 	LOG("Destroying physics world");
-
 	// TODO Delete the whole physics world!
 	if (world != nullptr)
+	
 	{
+		if (mouse_joint != nullptr) {
+			world->DestroyJoint(mouse_joint);
+			mouse_joint = nullptr;
+		}
+		if (mouse_joint_ball != nullptr) {
+			world->DestroyJoint(mouse_joint_ball);
+			mouse_joint_ball = nullptr;
+		}
+		if (mouseSelect != nullptr) {
+			world->DestroyBody(mouseSelect);
+			mouseSelect = nullptr;
+		}
+		if (mouseSelect_ball != nullptr) {
+
+			world->DestroyBody(mouseSelect_ball);
+			mouseSelect_ball = nullptr;
+		}
+		if (ground != nullptr) {
+
+			world->DestroyBody(ground);
+			ground = nullptr;
+		}/*
 		for (b2Joint* j = world->GetJointList(); j; )
 		{
 			b2Joint* nextJoint = j->GetNext();
-			world->DestroyJoint(j);
+			if (j)
+			{
+				world->DestroyJoint(j);
 			j = nextJoint;
-		}
+			}
+		}*/
 
 		for (b2Body* b = world->GetBodyList(); b; )
 		{
+			if (b) {
+
+
+
 			b2Body* nextBody = b->GetNext(); 
 
 			if (b->GetUserData().pointer != 0)
@@ -535,17 +564,16 @@ bool ModulePhysics::CleanUp()
 			}
 			world->DestroyBody(b);
 			b = nextBody; 
+
+			}
 		}
 
-		delete world;
-		world = nullptr;
+		
 	}
-	mouse_joint = nullptr;
-	mouse_joint_ball = nullptr;
-	mouseSelect = nullptr;
-	mouseSelect_ball = nullptr;
-	ground = nullptr;
 
+	delete world;
+	world = nullptr;
+	
 	return true;
 }
 

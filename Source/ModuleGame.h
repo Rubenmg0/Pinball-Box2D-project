@@ -40,7 +40,17 @@ public:
 		joint1->SetMotorSpeed(-1000.0f);
 
 	}
+	~FlipperLeft() {
+	
+		paddle1Anchor = nullptr;
+		paddle1 = nullptr;
+		pivot.x=0;
+		pivot.y = 0;
+		joint1 = nullptr;	
+	
+	}
 };
+
 
 class ModuleGame : public Module
 {

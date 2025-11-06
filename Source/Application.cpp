@@ -22,8 +22,8 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(window);
 	AddModule(physics);
+	AddModule(window);
 	AddModule(audio);
 	
 	// Scenes
@@ -110,6 +110,7 @@ bool Application::CleanUp()
 	for (auto it = list_modules.rbegin(); it != list_modules.rend() && ret; ++it)
 	{
 		Module* item = *it;
+		
 		ret = item->CleanUp();
 	}
 	
